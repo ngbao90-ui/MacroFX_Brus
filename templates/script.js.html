@@ -1,0 +1,32 @@
+<script>
+function toggle(id, secId){
+  var el=document.getElementById(id);
+  var btn=document.getElementById(secId).querySelector('.section-btn');
+  if(el.style.display==='none'||el.style.display===''){
+    el.style.display='block';
+    btn.classList.add('open');
+  } else {
+    el.style.display='none';
+    btn.classList.remove('open');
+  }
+}
+function togglePair(id){
+  var el=document.getElementById(id);
+  if(el.classList.contains('show')){el.classList.remove('show');}
+  else{el.classList.add('show');}
+}
+function toggleCur(id){
+  var el=document.getElementById(id);
+  if(el.classList.contains('show')){el.classList.remove('show');}
+  else{el.classList.add('show');}
+}
+function switchTab(tab){
+  document.getElementById('usd-pairs').style.display = tab==='usd' ? 'block' : 'none';
+  document.getElementById('cross-pairs').style.display = tab==='cross' ? 'block' : 'none';
+  document.getElementById('tab-usd').className = 'tab-btn ' + (tab==='usd'?'tab-active':'tab-inactive');
+  document.getElementById('tab-cross').className = 'tab-btn ' + (tab==='cross'?'tab-active':'tab-inactive');
+}
+// Init: open heatmap section
+document.getElementById('heatmap').style.display='block';
+document.getElementById('spot').style.display='block';
+</script>
