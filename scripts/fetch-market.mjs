@@ -16,7 +16,12 @@ if (!FMP_KEY) {
   process.exit(0);
 }
 
-const FMP_BASE = 'https://financialmodelingprep.com/api/v3';
+// Try v4 first, fallback to v3
+const FMP_BASES = [
+  'https://financialmodelingprep.com/api/v4',
+  'https://financialmodelingprep.com/api/v3'
+];
+let FMP_BASE = FMP_BASES[0];
 
 async function fmpQuote(symbols) {
   const url = `${FMP_BASE}/quote/${symbols.join(',')}?apikey=${FMP_KEY}`;
@@ -50,44 +55,59 @@ function fmtPrice(v, digits) {
 async function main() {
   const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
-  // ---- FX pairs (chunk requests to stay under URL limits) ----
-  const priceByCode = {};
-  const chunks = [];
-  for (let i = 0; i < ALL_PAIRS.length; i += 10) chunks.push(ALL_PAIRS.slice(i, i + 10));
-  for (const chunk of chunks) {
-    const quotes = await fmpQuote(chunk);
-    for (const q of quotes) {
-      const digits = q.symbol.includes('JPY') ? 2 : 4;
-      priceByCode[q.symbol] = fmtPrice(q.price, digits);
-    }
-  }
-
-  for (const p of data.pairs.usd) if (priceByCode[p.code]) p.price = priceByCode[p.code];
-  for (const p of data.pairs.cross) if (priceByCode[p.code]) p.price = priceByCode[p.code];
-
-  // ---- Market bar (Gold / WTI / Brent / S&P500 / US10Y / DXY) ----
-  const others = await fmpQuote(Object.values(OTHER_SYMBOLS));
-  const byUnderlying = Object.fromEntries(others.map(o => [o.symbol, o]));
-
-  const setBar = (label, value) => {
-    const item = data.marketBar.find(m => m.label === label);
-    if (item) item.value = value;
-  };
-  if (byUnderlying[OTHER_SYMBOLS.gold]) setBar('Gold', `$${Math.round(byUnderlying[OTHER_SYMBOLS.gold].price).toLocaleString('en-US')}`);
-  if (byUnderlying[OTHER_SYMBOLS.wti]) setBar('WTI', `$${fmtPrice(byUnderlying[OTHER_SYMBOLS.wti].price, 2)}`);
-  if (byUnderlying[OTHER_SYMBOLS.brent]) setBar('Brent', `$${fmtPrice(byUnderlying[OTHER_SYMBOLS.brent].price, 2)}`);
-  if (byUnderlying[OTHER_SYMBOLS.sp500]) setBar('S&P500', Math.round(byUnderlying[OTHER_SYMBOLS.sp500].price).toLocaleString('en-US'));
-  if (byUnderlying[OTHER_SYMBOLS.us10y]) setBar('US10Y', `${fmtPrice(byUnderlying[OTHER_SYMBOLS.us10y].price / 10, 2)}%`);
-
-  // DXY: FMP symbol "DX" or "DX-Y.NYB" often unavailable on free tier; try, else leave as-is.
   try {
-    const dxy = await fmpQuote(['DX-Y.NYB']);
-    if (dxy[0]) setBar('DXY', fmtPrice(dxy[0].price, 2));
-  } catch { /* leave existing value */ }
+    // ---- FX pairs (chunk requests to stay under URL limits) ----
+    const priceByCode = {};
+    const chunks = [];
+    for (let i = 0; i < ALL_PAIRS.length; i += 10) chunks.push(ALL_PAIRS.slice(i, i + 10));
+    for (const chunk of chunks) {
+      try {
+        const quotes = await fmpQuote(chunk);
+        for (const q of quotes) {
+          const digits = q.symbol.includes('JPY') ? 2 : 4;
+          priceByCode[q.symbol] = fmtPrice(q.price, digits);
+        }
+      } catch (e) {
+        console.warn(`Failed to fetch chunk ${chunk.join(',')}: ${e.message}`);
+        // Continue with next chunk
+      }
+    }
+
+    for (const p of data.pairs.usd) if (priceByCode[p.code]) p.price = priceByCode[p.code];
+    for (const p of data.pairs.cross) if (priceByCode[p.code]) p.price = priceByCode[p.code];
+
+    // ---- Market bar (Gold / WTI / Brent / S&P500 / US10Y / DXY) ----
+    try {
+      const others = await fmpQuote(Object.values(OTHER_SYMBOLS));
+      const byUnderlying = Object.fromEntries(others.map(o => [o.symbol, o]));
+
+      const setBar = (label, value) => {
+        const item = data.marketBar.find(m => m.label === label);
+        if (item) item.value = value;
+      };
+      if (byUnderlying[OTHER_SYMBOLS.gold]) setBar('Gold', `$${Math.round(byUnderlying[OTHER_SYMBOLS.gold].price).toLocaleString('en-US')}`);
+      if (byUnderlying[OTHER_SYMBOLS.wti]) setBar('WTI', `$${fmtPrice(byUnderlying[OTHER_SYMBOLS.wti].price, 2)}`);
+      if (byUnderlying[OTHER_SYMBOLS.brent]) setBar('Brent', `$${fmtPrice(byUnderlying[OTHER_SYMBOLS.brent].price, 2)}`);
+      if (byUnderlying[OTHER_SYMBOLS.sp500]) setBar('S&P500', Math.round(byUnderlying[OTHER_SYMBOLS.sp500].price).toLocaleString('en-US'));
+      if (byUnderlying[OTHER_SYMBOLS.us10y]) setBar('US10Y', `${fmtPrice(byUnderlying[OTHER_SYMBOLS.us10y].price / 10, 2)}%`);
+
+      // DXY: FMP symbol "DX" or "DX-Y.NYB" often unavailable on free tier; try, else leave as-is.
+      try {
+        const dxy = await fmpQuote(['DX-Y.NYB']);
+        if (dxy[0]) setBar('DXY', fmtPrice(dxy[0].price, 2));
+      } catch { /* leave existing value */ }
+    } catch (e) {
+      console.warn(`Failed to fetch market bar commodities: ${e.message}`);
+      // Continue - we still have FX pairs updated
+    }
+  } catch (e) {
+    console.warn('FMP fetch failed, skipping price update:', e.message);
+    console.log('Dashboard prices left unchanged - will use existing data.');
+  }
 
   data.meta.updatedAt = new Date().toISOString();
   fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
-  console.log('Updated live prices for', Object.keys(priceByCode).length, 'pairs + market bar.');
+  console.log('Updated dashboard data. FX pairs and market bar updated where FMP data available.');
 }
 
 main().catch(e => {
