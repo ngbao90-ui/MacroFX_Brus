@@ -13,29 +13,50 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const dataPath = path.join(root, 'data/dashboard.json');
 
-const SYSTEM_PROMPT = `Bạn là trợ lý phân tích Macro FX, duy trì một dashboard G8+NZD (USD, EUR, JPY, GBP, CHF, CAD, AUD, NZD) dạng JSON.
+const SYSTEM_PROMPT = `You are a Macro FX analysis assistant maintaining a G8+NZD (USD, EUR, JPY, GBP, CHF, CAD, AUD, NZD) dashboard in JSON format.
 
-QUY TẮC BẤT BIẾN:
-1. Bạn KHÔNG BAO GIỜ output HTML. Bạn chỉ output MỘT object JSON hợp lệ — "patch" — chứa các phần dữ liệu cần thay đổi. Không giải thích, không markdown, khô[...]
-2. Patch chỉ chứa các object đã thay đổi thật sự (để tiết kiệm token). Nếu một đồng tiền không có tin gì mới, ĐỪNG đưa nó vào "currencies". Nếu một c[...]
-3. QUAN TRỌNG NHẤT — TÍNH LOGIC LIÊN KẾT: nếu bạn thay đổi bất kỳ điều gì về một đồng tiền (score, narrative, forward guidance, sự kiện mới), bạn PHẢI k[...]
-   - currencies[]: score, macroScore, secondaryScore, stance, narrative, forwardGuidance, latestEvent, scoreHistory (append 1 dòng mới nếu có sự kiện đáng kể, giữ tối đa 5 dòng[...]
-   - pairs.usd[] và pairs.cross[]: MỌI cặp tiền có chứa đồng tiền đó — cập nhật lại "dots" (3 lớp: macro/kỹ thuật/COT), "structure", "bondYield", "spreadTag", "signa[...]
-   - spotlight.confluence / spotlight.divergence: thêm/bớt/sửa cặp tiền nếu trạng thái 3/3 hoặc phân kỳ thay đổi.
-   - narrative.themes: cập nhật nếu có chủ đề vĩ mô lớn thay đổi (banner chính của dashboard).
-   - cot[]: chỉ cập nhật nếu có dữ liệu COT mới (thường vào thứ Sáu, dữ liệu Tradingster cắt vào thứ Ba trước đó).
-   - riskCalendar: thêm sự kiện mới sắp tới nếu có, có thể xoá sự kiện đã qua ngày.
-4. Điểm số (score) 0–10: Score = Macro_Core × 0.70 + Secondary_Factor × 0.30. Macro_Core dựa trên: (a) data thực tế lạm phát/lao động vs mục tiêu, (b) delta vs kỳ vọng[...]
-5. Với mỗi cặp tiền, "dots" là mảng 3 phần tử ["up"|"down"|"neutral", ...] theo thứ tự [Macro, Kỹ thuật, COT]. 3/3 cùng chiều = confluence mạnh (đặt "highlight": tru[...]
-6. Không đưa ra lời khuyên đầu tư trực tiếp — chỉ mô tả setup/bias theo dữ liệu.
-7. Tất cả text bằng tiếng Việt, giữ văn phong ngắn gọn, số liệu cụ thể, giống với văn phong hiện có trong JSON hiện tại (làm mẫu).
-8. Nếu bạn có công cụ web_search, chỉ dùng để: (a) kiểm tra tin tức/số liệu vĩ mô mới nhất trong 24-48h qua cho các đồng tiền G8+NZD, (b) vào thứ Sáu, tra c[...]
-9. Nếu KHÔNG có gì đáng kể thay đổi so với dữ liệu hiện tại, trả về {} (patch rỗng) — điều này hoàn toàn bình thường và tiết kiệm chi phí.
+CRITICAL REQUIREMENTS:
+1. OUTPUT ONLY VALID JSON. No markdown, no code blocks, no explanations, no text before/after. Start with '{' end with '}'.
+2. Return a JSON patch object containing ONLY the fields that actually changed.
+3. If nothing changed, return {} (empty object).
+4. Never explain, never add comments, never output anything except JSON.
 
-ĐỊNH DẠNG OUTPUT: một JSON object duy nhất, ví dụ:
-{"currencies":[{"code":"CAD","score":3.6,"narrative":"..."}],"pairs":{"usd":[{"code":"USDCAD","price":"1.4210","dots":["up","up","up"],"highlight":true,"signalBox":"..."}],"cross":[]},"spotlight":[...]
+VALIDATION RULES FOR YOUR OUTPUT:
+- Must be valid JSON that parses with JSON.parse()
+- Top level must be an object {}
+- Keys: "meta", "currencies", "pairs", "narrative", "spotlight", "cot", "riskCalendar" (optional, only if changed)
+- "currencies" = array of {code, score, stance, narrative, forwardGuidance, latestEvent, scoreHistory, etc}
+- "pairs" = {usd: [...], cross: [...]} arrays
+- All string values must use proper JSON escaping (no raw newlines)
 
-**CRITICAL**: Output ONLY valid JSON. No markdown, no explanations, no text before or after the JSON object.`;
+SCORING LOGIC:
+- Score 0-10: Macro_Score × 0.70 + Secondary_Factor × 0.30
+- Macro_Score based on: (a) inflation vs target, (b) delta vs expectations, (c) policy stance
+- Secondary factors: geopolitical, commodity exposure, currency stability
+
+PAIR DOTS ARRAY:
+- 3 elements: [macro_bias, technical_bias, cot_bias]
+- Each: "up", "down", or "neutral"
+- 3/3 same direction = highlight: true
+
+LOGIC LINKING:
+If you change any currency: update ALL pairs containing it. Update spotlight confluence/divergence. Update narrative themes if macro regime changed.
+
+LANGUAGE: Vietnamese only. Keep text concise, specific numbers, match existing tone.
+
+DATA PROVIDED:
+- Current dashboard.json with live FMP prices already updated
+- All currencies, pairs, COT, narrative, risk calendar
+
+TASK:
+1. Search for macro news 24-48 hours if web_search available
+2. Update scores, narratives, forward guidance based on new data
+3. Return ONLY the JSON patch object - nothing else
+
+EXAMPLE OUTPUT (valid JSON only):
+{"currencies":[{"code":"USD","score":7.8,"narrative":"New narrative here"}],"pairs":{"usd":[{"code":"USDCAD","dots":["up","up","up"]}]},"narrative":{"themes":[...]}}
+
+REMEMBER: Start with { and end with }. No markdown. No explanations. Only JSON.`;
 
 function pruneForPrompt(data) {
   // Trim history to keep the prompt small; the LLM only needs recent context.
@@ -51,7 +72,7 @@ function extractJson(text) {
     // Try direct JSON parse first
     return JSON.parse(text.trim());
   } catch (e) {
-    // Remove markdown code blocks
+    // Remove markdown code blocks if present
     let trimmed = text.trim()
       .replace(/^```json\s*/i, '')
       .replace(/^```\s*/i, '')
@@ -76,11 +97,15 @@ function extractJson(text) {
       // Fix unescaped newlines in strings
       fixed = fixed.replace(/[\n\r]/g, ' ');
       
+      // Fix missing commas between array elements
+      fixed = fixed.replace(/\]\s*\[/g, '],[');
+      fixed = fixed.replace(/\}\s*\{/g, '},{');
+      
       // Try parsing again
       try {
         return JSON.parse(fixed);
       } catch (err2) {
-        throw new Error(`Failed to parse JSON after fix attempts: ${parseErr.message}`);
+        throw new Error(`Failed to parse JSON after fix attempts at position ${e.message}`);
       }
     }
   }
@@ -98,7 +123,9 @@ async function main() {
 Dữ liệu dashboard hiện tại (giá đã được cập nhật tự động từ FMP, bạn không cần tự tính lại giá FX):
 ${JSON.stringify(promptData)}
 
-Hãy tìm tin tức vĩ mô mới nhất (nếu có web_search) cho USD, EUR, JPY, GBP, CHF, CAD, AUD, NZD trong 24-48h qua, và trả về JSON patch theo đúng quy tắc trong system prompt. Output ONLY the JSON object, nothing else.`;
+Hãy tìm tin tức vĩ mô mới nhất (nếu có web_search) cho USD, EUR, JPY, GBP, CHF, CAD, AUD, NZD trong 24-48h qua.
+
+OUTPUT ONLY THE JSON PATCH OBJECT. NO TEXT BEFORE OR AFTER. START WITH { END WITH }.`;
 
   const useWebSearch = process.env.ENABLE_WEB_SEARCH === 'true' || isFriday;
 
@@ -112,13 +139,14 @@ Hãy tìm tin tức vĩ mô mới nhất (nếu có web_search) cho USD, EUR, JP
     });
 
     console.log('[LLM Response Length]', raw.length, 'chars');
+    console.log('[LLM Response Start]', raw.slice(0, 100));
 
     try {
       patch = extractJson(raw);
-      console.log('[LLM Patch Extracted]', Object.keys(patch).length === 0 ? 'empty' : 'has updates');
+      console.log('[LLM Patch Extracted]', Object.keys(patch).length === 0 ? 'empty patch' : 'keys: ' + Object.keys(patch).join(', '));
     } catch (parseErr) {
       console.error('[JSON Parse Failed]', parseErr.message);
-      console.error('[Response Preview]', raw.slice(0, 500));
+      console.error('[Response Preview]', raw.slice(0, 1000));
       console.warn('LLM returned invalid JSON, using empty patch (dashboard unchanged).');
       patch = {};
     }
@@ -129,7 +157,7 @@ Hãy tìm tin tức vĩ mô mới nhất (nếu có web_search) cho USD, EUR, JP
   }
 
   if (Object.keys(patch).length === 0) {
-    console.log('[Result] No macro-relevant changes detected, dashboard.json left as-is.');
+    console.log('[Result] No macro-relevant changes detected or empty patch received.');
     console.log('[Dashboard] Updating only meta.updatedAt timestamp.');
     data.meta.updatedAt = new Date().toISOString();
     fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
@@ -139,10 +167,11 @@ Hãy tìm tin tức vĩ mô mới nhất (nếu có web_search) cho USD, EUR, JP
       merged.meta.dateLabel = dateLabel;
       merged.meta.updatedAt = new Date().toISOString();
       fs.writeFileSync(dataPath, JSON.stringify(merged, null, 2));
-      console.log('[Result] Patch applied with keys:', Object.keys(patch).join(', '));
+      console.log('[Result] Patch applied successfully with keys:', Object.keys(patch).join(', '));
+      console.log('[Currencies Updated]', patch.currencies ? patch.currencies.map(c => c.code).join(', ') : 'none');
     } catch (mergeErr) {
       console.error('[Patch Apply Failed]', mergeErr.message);
-      console.warn('Failed to apply patch, leaving dashboard.json unchanged.');
+      console.warn('Failed to apply patch, leaving dashboard.json unchanged except timestamp.');
       data.meta.updatedAt = new Date().toISOString();
       fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
     }
