@@ -1,0 +1,51 @@
+<div class="section" id="sec-method">
+  <button class="section-btn" onclick="toggle('method','sec-method')">
+    <div class="section-btn-inner">ℹ️ Phương pháp & Hướng dẫn cập nhật</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="method-text" id="method" style="display:none">
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-bottom:6px">① NGUỒN DỮ LIỆU</p>
+    <p><b style="color:#d4d4d8">FMP API</b> — 27 cặp FX · DXY · Gold · Brent · S&P500 · US10Y. Realtime.</p>
+    <p><b style="color:#d4d4d8">TradingView</b> (web search) — DE/GB/JP/AU/CA/NZ/CH 10Y bond yield · WTI crude. Trễ tối đa 1 ngày — chấp nhận được cho dashboard chiến lược.</p>
+    <p><b style="color:#d4d4d8">Tradingster.com</b> (web fetch) — COT Legacy Futures, cutoff thứ Ba, release thứ Sáu 15:30 ET. URLs cố định: EUR 099741 · JPY 097741 · AUD 232741 · GBP 096742 · CAD 090741 · CHF 092741 · NZD 112741 · USD 098662. Claude tự fetch và tính Z-score.</p>
+    <p><b style="color:#d4d4d8">Web search</b> — Policy rates · Narrative NHTW · Macro flash (CPI/NFP/GDP) · OIS probability. Chỉ search khi có meeting/data release.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">② SCORE TỔNG HỢP 0–10</p>
+    <p><code>Score = Macro_Core × 0.70 + Secondary_Factor × 0.30</code></p>
+    <p><code>Macro_Core = Tầng1 × 0.35 + Tầng2 × 0.40 + Tầng3 × 0.25</code></p>
+
+    <p style="margin-top:8px"><b style="color:#d4d4d8">Tầng 1 — Data thực tế (35%):</b> Lạm phát vs target + Lao động/tăng trưởng vs natural rate. Trọng số nội bộ thay đổi theo <b>pha kinh tế</b> (xem bên dưới).</p>
+    <p><b style="color:#d4d4d8">Tầng 2 — Delta vs kỳ vọng (40% — trọng số cao nhất):</b> Actual vs consensus surprise · NHTW meeting hawkish/dovish hơn hay kém thị trường kỳ vọng · <b>Decay 4 tuần</b>: tuần T = 100%, T-1 = 50%, T-2 = 25%, T-3 = 25%, T-4+ = 0%. Lý do: thị trường di chuyển theo kỳ vọng, không phải data tuyệt đối.</p>
+    <p><b style="color:#d4d4d8">Tầng 3 — Forward expectation (25%):</b> OIS/futures pricing bao nhiêu hike/cut · Guidance momentum (đang shift hawkish hay dovish so với meeting trước) · Độ rõ ràng của path (explicit path vs data-dependent).</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">③ 4 PHA KINH TẾ — TRỌNG SỐ TẦNG 1</p>
+    <p><b style="color:#4ade80">Pha 1 — Expansion · Tightening</b> (lạm phát &gt; target, lao động mạnh → NHTW ưu tiên chống lạm phát): <code>Inflation 55% · Labor 20% · Policy rate 25%</code> — Hiện tại: AUD, USD</p>
+    <p><b style="color:#facc15">Pha 2 — Stagflation · Dual Pressure</b> (lạm phát cao + tăng trưởng/lao động yếu → NHTW bị kẹt): <code>Inflation 40% · Labor 40% · Policy rate 20%</code> — Hiện tại: GBP, NZD, CAD</p>
+    <p><b style="color:#93c5fd">Pha 3 — Slowdown · Pivot Watch</b> (lạm phát về gần target, lo tăng trưởng → NHTW shift dovish): <code>Labor 50% · Inflation 25% · Policy rate 25%</code> — Hiện tại: CHF, EUR</p>
+    <p><b style="color:#f87171">Pha 4 — Recovery · Easing</b> (lạm phát dưới target, cần kích thích → NHTW cắt giảm): <code>Labor 60% · Inflation 15% · Policy rate 25%</code> — Hiện tại: không có</p>
+    <p style="color:#52525b;font-size:11px">Claude tự xác định pha dựa trên NHTW statement + macro data. Review lại sau mỗi meeting lớn.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">④ SECONDARY FACTOR (30%) — ĐẶC THÙ TỪNG ĐỒNG TIỀN</p>
+    <p><b style="color:#d4d4d8">USD</b> — Tariff inflation (độc lập với dầu) + NFP surprise index · <b>EUR</b> — Nhập khẩu năng lượng (dầu giảm → lạm phát hạ nhanh) + Germany PMI · <b>GBP</b> — Services CPI sticky + fiscal space · <b>JPY</b> — Real yield âm/dương + BoJ intervention risk + safe haven flow · <b>AUD</b> — China PMI + commodity basket (iron ore/coal) · <b>NZD</b> — GDT dairy index + stagflation risk · <b>CAD</b> — WTI oil price correlation · <b>CHF</b> — Geopolitical safe haven premium (tăng khi risk-off, giảm khi peace deal)</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑤ COT Z-SCORE</p>
+    <p><code>Z = (net_position_hiện_tại − mean_52w) / stdev_52w</code></p>
+    <p>Nguồn: Tradingster.com · CFTC Legacy Futures Only · Non-Commercial (Large Speculators). |Z| &gt; 2.0 = cực đoan (crowded) · 1.0–2.0 = lệch rõ · &lt; 1.0 = bình thường. <b>Không dùng để timing</b> — chỉ xác nhận chiều hoặc cảnh báo đảo chiều khi Z cực đoan.</p>
+    <p style="color:#52525b;font-size:11px">Z-score được tính từ 52 tuần lịch sử net position. Claude fetch Tradingster mỗi thứ Sáu và tự tính. Khi |Z| &gt; 2.0 + data macro đảo chiều = warning level cao nhất.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑥ BOND YIELD SPREAD</p>
+    <p><code>Spread (bp) = yield_base_ccy − yield_quote_ccy</code></p>
+    <p><span style="background:#14532d;color:#86efac;padding:1px 6px;border-radius:3px;font-size:11px">↗ Giãn rộng</span> = có lợi cho base ccy (spread đang tăng) · <span style="background:#7f1d1d;color:#fca5a5;padding:1px 6px;border-radius:3px;font-size:11px">↘ Thu hẹp</span> = bất lợi cho base ccy · <span style="background:#27272a;color:#a1a1aa;padding:1px 6px;border-radius:3px;font-size:11px">→ Ổn định</span> = không rõ hướng. <b>Động lực giãn/thu hẹp quan trọng hơn mức tuyệt đối.</b></p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑦ LAYER BIAS & CONFLUENCE</p>
+    <p>↑ Bullish base · ↓ Bearish base · — Neutral &nbsp;|&nbsp; [Macro · Kỹ thuật · COT]. <b>3/3 = Confluence mạnh</b> → conviction cao. Phân kỳ = thận trọng, chờ catalyst.</p>
+    <p><b style="color:#d4d4d8">Điểm số ≠ tín hiệu mua/bán.</b> Score → direction bias. Kỹ thuật → timing entry. COT → confirm hoặc cảnh báo crowded.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑧ QUY TRÌNH CẬP NHẬT — 1 LỆNH</p>
+    <p>Gõ: <code style="background:#18181b;color:#4ade80;padding:2px 8px;border-radius:4px;font-size:12px">"cập nhật dashboard"</code> — Claude sẽ tự động: FMP API (giá FX + DXY + Gold + Brent + S&P500 + US10Y) → TradingView search (7 bond yields + WTI) → Tradingster fetch (COT 8 currencies + tính Z-score) → Web search (narrative/policy nếu có event) → Tính score → Update toàn bộ dashboard.</p>
+    <p style="color:#52525b">Thời gian update ước tính: 3–5 phút. Data sources: FMP · TradingView · Tradingster · Web search. Không phải lời khuyên đầu tư.</p>
+
+  </div>
+</div>
+
