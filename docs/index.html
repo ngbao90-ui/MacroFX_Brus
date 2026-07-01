@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G8+NZD Macro FX Dashboard — 29/06/2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#09090b;color:#fafafa;font-family:system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5}
+.wrap{max-width:800px;margin:0 auto;padding:20px 16px}
+.header-sub{font-size:11px;color:#52525b;margin-bottom:4px}
+.header-title{font-size:22px;font-weight:800;color:#fafafa;letter-spacing:-0.5px;margin-bottom:4px}
+.header-desc{font-size:12px;color:#71717a;margin-bottom:10px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.badge{font-size:11px;border-radius:6px;padding:3px 9px}
+.badge-gray{background:#27272a;color:#a1a1aa}
+.badge-fire{background:#78350f;color:#fef08a}
+/* Market Bar */
+.mbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.mitem{background:#27272a;border-radius:8px;padding:4px 10px;font-size:12px}
+.mitem span{color:#71717a}.mitem b{color:#e4e4e7;font-weight:600}
+/* Section */
+.section{border:1px solid #27272a;border-radius:14px;background:#18181b;margin-bottom:16px;overflow:hidden}
+.section-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fafafa}
+.section-btn-inner{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#fafafa}
+.section-content{padding:0 16px 16px 16px}
+.chevron{transition:transform .2s;color:#71717a;font-size:14px}
+.open .chevron{transform:rotate(180deg)}
+/* Heatmap */
+.heatmap{display:flex;gap:8px;flex-wrap:wrap}
+.hm-card{background:#27272a;border-radius:10px;padding:8px 12px;text-align:center;min-width:72px}
+.hm-flag{font-size:18px;margin-bottom:2px}
+.hm-code{font-size:12px;font-weight:700;color:#fafafa;margin-bottom:2px}
+.hm-score{font-size:16px;font-weight:800;margin-bottom:3px}
+.hm-stance{font-size:10px;border-radius:4px;padding:1px 5px;margin-bottom:2px;display:inline-block}
+.hm-rank{font-size:9px;color:#71717a}
+/* Pairs */
+.pair-row{border-bottom:1px solid #27272a}
+.pair-btn{width:100%;background:transparent;border:none;cursor:pointer;padding:8px 12px;display:flex;align-items:center;gap:8px;color:#fafafa}
+.pair-code{font-size:12px;font-weight:700;color:#fafafa;width:72px;text-align:left}
+.pair-price{font-size:12px;color:#a1a1aa;width:72px;text-align:left}
+.pair-atr{font-size:11px;color:#71717a;flex:1;text-align:left}
+.dots{display:flex;gap:4px}
+.dot-up{color:#4ade80;font-size:14px;font-weight:800}
+.dot-dn{color:#f87171;font-size:14px;font-weight:800}
+.dot-nt{color:#52525b;font-size:14px;font-weight:800}
+.pair-detail{padding:8px 12px 12px;background:#0a0a0a;font-size:12px;color:#a1a1aa;display:none}
+.pair-detail.show{display:block}
+.pair-detail-label{color:#d4d4d8;font-weight:600}
+.signal-box{background:#18181b;border-radius:6px;padding:6px 10px;color:#e4e4e7;font-style:italic;margin-top:6px}
+/* Market Narrative */
+.narrative-panel{border:1px solid #3b1d0a;border-radius:14px;background:#1a0f05;margin-bottom:16px;overflow:hidden}
+.narrative-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #3b1d0a}
+.narrative-title{font-size:13px;font-weight:700;color:#fef08a}
+.narrative-updated{font-size:10px;color:#71717a}
+.narrative-body{padding:12px 16px}
+.narrative-theme{background:#27272a;border-radius:10px;padding:10px 14px;margin-bottom:10px}
+.narrative-theme-title{font-size:12px;font-weight:700;color:#fafafa;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.narrative-theme-body{font-size:12px;color:#a1a1aa;line-height:1.7}
+.narrative-impact{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.impact-tag{font-size:10px;padding:2px 7px;border-radius:4px}
+.impact-pos{background:#14532d;color:#86efac}
+.impact-neg{background:#7f1d1d;color:#fca5a5}
+.impact-neu{background:#27272a;color:#a1a1aa}
+.narrative-divider{font-size:11px;font-weight:600;color:#52525b;margin:10px 0 6px;padding-top:6px;border-top:1px solid #27272a}
+/* COT 3 groups */
+.cot-group-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.cot-group-box{background:#18181b;border-radius:6px;padding:6px 8px}
+.cot-group-label{font-size:9px;color:#52525b;font-weight:600;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.5px}
+.cot-group-net{font-size:12px;font-weight:700;margin-bottom:1px}
+.cot-group-flow{font-size:10px;color:#71717a}
+.cot-buyside{font-size:11px;margin-top:6px;padding-top:6px;border-top:1px solid #27272a;color:#a1a1aa}
+.flow-long{color:#4ade80}
+.flow-short{color:#f87171}
+.flow-neutral{color:#a1a1aa}
+.cot-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cot-detail{font-size:12px;color:#a1a1aa;line-height:1.6}
+.cot-zscore{font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:auto}
+.zscore-extreme-long{background:#14532d;color:#86efac}
+.zscore-long{background:#1a3a20;color:#6ee7b7}
+.zscore-neutral{background:#27272a;color:#a1a1aa}
+.zscore-short{background:#4a1d60;color:#d8b4fe}
+.zscore-extreme-short{background:#7f1d1d;color:#fca5a5}
+.spread-tag{font-size:10px;padding:1px 6px;border-radius:3px;margin-left:6px;font-weight:600}
+.spread-widen{background:#14532d;color:#86efac}
+.spread-narrow{background:#7f1d1d;color:#fca5a5}
+.spread-stable{background:#27272a;color:#a1a1aa}
+/* Risk */
+.risk-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #27272a}
+.risk-date{font-size:11px;color:#a1a1aa;min-width:72px;padding-top:1px}
+.risk-event{flex:1;font-size:12px;color:#e4e4e7}
+.risk-high{font-size:10px;padding:2px 7px;border-radius:4px;background:#7f1d1d;color:#fca5a5}
+.risk-med{font-size:10px;padding:2px 7px;border-radius:4px;background:#27272a;color:#a1a1aa}
+/* Currency Card */
+.cur-card{border:1px solid #27272a;border-radius:14px;background:#18181b;overflow:hidden;margin-bottom:10px}
+.cur-head{width:100%;background:transparent;border:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:12px;color:#fafafa}
+.cur-flag{font-size:24px}
+.cur-info{flex:1;text-align:left}
+.cur-code{font-weight:700;font-size:15px;color:#fafafa}
+.cur-stance{font-size:10px;border-radius:4px;padding:2px 7px;margin-left:8px}
+.cur-bank{font-size:11px;color:#71717a;margin-top:2px}
+.cur-scores{text-align:right}
+.cur-main-score{font-size:26px;font-weight:800;line-height:1}
+.cur-sub-scores{font-size:10px;color:#52525b;margin-top:2px}
+.score-bar{width:60px;height:4px;background:#27272a;border-radius:2px;margin-top:4px}
+.score-bar-fill{height:100%;border-radius:2px}
+.cur-summary{padding:0 16px 12px;border-top:1px solid #27272a}
+.cur-rate{font-size:12px;color:#a1a1aa;margin-top:10px}
+.cur-body{padding:0 16px 16px;border-top:1px solid #27272a;background:#0f0f0f;display:none}
+.cur-body.show{display:block}
+.cur-section{margin-top:14px;margin-bottom:10px}
+.cur-section-title{font-size:12px;font-weight:600;color:#d4d4d8;margin-bottom:6px}
+.cur-text{font-size:12px;color:#a1a1aa;line-height:1.7}
+.event-box{border-left:3px solid #3b82f6;background:#18181b;border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.event-label{font-size:11px;color:#93c5fd;font-weight:600;margin-bottom:4px}
+.event-text{font-size:12px;color:#d4d4d8;line-height:1.6}
+.upcoming-date{color:#facc15;min-width:75px;display:inline-block}
+.secondary-box{background:#18181b;border-radius:8px;padding:10px 12px;margin-bottom:12px}
+.secondary-title{font-size:11px;font-weight:600;color:#e4e4e7;margin-bottom:4px}
+.secondary-score{color:#4ade80;margin-left:8px}
+.secondary-text{font-size:12px;color:#a1a1aa;line-height:1.6}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.meta-box{background:#18181b;border-radius:8px;padding:8px 10px}
+.meta-label{font-size:10px;color:#71717a;margin-bottom:3px}
+.meta-val{font-size:11px;color:#d4d4d8}
+.meta-note{font-size:11px;color:#a1a1aa;margin-top:3px}
+/* Chart */
+.chart-wrap{width:100%;overflow-x:auto;margin-top:6px}
+.chart-svg{width:100%;height:120px}
+.history-list{margin-top:6px}
+.history-item{font-size:11px;color:#71717a;margin-bottom:2px}
+.history-date{color:#a1a1aa}
+.history-score{font-weight:600}
+/* Tabs */
+.tab-bar{display:flex;gap:8px;margin-bottom:12px}
+.tab-btn{padding:5px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:600}
+.tab-active{background:#3b82f6;color:#fff}
+.tab-inactive{background:#27272a;color:#a1a1aa}
+/* Methodology */
+.method-text{font-size:12px;color:#a1a1aa;line-height:1.8;padding:0 18px 18px}
+.method-text p{margin-bottom:8px}
+code{background:#0a0a0a;padding:1px 5px;border-radius:4px}
+/* Note boxes */
+.cot-note{background:#0a0a0a;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#71717a}
+.footer{text-align:center;margin-top:24px;font-size:11px;color:#52525b;padding-bottom:24px}
+/* Color utils */
+.green{color:#4ade80}.yellow{color:#facc15}.red{color:#f87171}
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- HEADER -->
+<div class="header-sub">G7 + AUD + NZD — Phân Tích Macro FX</div>
+<div class="header-title">Macro FX Dashboard</div>
+<div class="header-desc">Dual Mandate · Hawkish/Dovish · Real Yields · Risk Sentiment · Policy Divergence · COT Z-Score</div>
+<div class="badges">
+  <span class="badge badge-gray">📅 29/06/2026 — FMP · TradingView · Tradingster · Tuần NFP 2/7</span>
+  <span class="badge badge-fire">🔥 USD #1 Score 7.8 · NFP 2/7 · RBNZ 8/7 · JPY extreme short Z=-2.3 · USDJPY 161.74</span>
+</div>
+<!-- MARKET BAR -->
+<div class="mbar">
+  <div class="mitem"><span>DXY </span><b>101.14</b></div>
+  <div class="mitem"><span>Gold </span><b>$4,065</b></div>
+  <div class="mitem"><span>Brent </span><b>$73.13</b></div>
+  <div class="mitem"><span>WTI </span><b>$70.80</b></div>
+  <div class="mitem"><span>US10Y </span><b>4.38%</b></div>
+  <div class="mitem"><span>S&P500 </span><b>7,354</b></div>
+</div>
+<!-- MARKET NARRATIVE -->
+<div class="narrative-panel">
+  <div class="narrative-header">
+    <div class="narrative-title">📡 Market Narrative — Câu chuyện đang chi phối thị trường</div>
+    <div class="narrative-updated">Cập nhật: 29/06/2026</div>
+  </div>
+  <div class="narrative-body">
+
+    <div class="narrative-theme">
+      <div class="narrative-theme-title">
+        <span style="background:#78350f;color:#fef08a;padding:1px 6px;border-radius:4px;font-size:10px">CHỦ ĐẠO · 2–4 TUẦN</span>
+        🦅 Fed Hawkish Độc Lập — "Higher for Longer" Warsh Era
+      </div>
+      <div class="narrative-theme-body">Warsh (nhậm chức 22/5) loại bỏ forward guidance, dot-plot median 3.8% với 9/18 thành viên nghiêng hike. Hawkish không phải từ dầu mà từ tariff inflation + lao động bền vững. PCE tháng 5 (26/6): headline 4.1%, core 3.4% — in-line, không phá vỡ narrative. NFP tuần tới (2/7) là catalyst chính — nếu beat lại, Sep hike từ 62% có thể vọt lên 75%+. Narrative này chi phối USD và tất cả USD pairs ít nhất đến FOMC 28–29/7.</div>
+      <div class="narrative-impact">
+        <span class="impact-tag impact-pos">USD ↑</span>
+        <span class="impact-tag impact-neg">EUR ↓</span>
+        <span class="impact-tag impact-neg">JPY ↓</span>
+        <span class="impact-tag impact-neg">CAD ↓</span>
+        <span class="impact-tag impact-neg">CHF ↓</span>
+        <span class="impact-tag impact-neu">AUD: phụ thuộc RBA</span>
+      </div>
+    </div>
+
+    <div class="narrative-theme">
+      <div class="narrative-theme-title">
+        <span style="background:#1a2a1a;color:#86efac;padding:1px 6px;border-radius:4px;font-size:10px">ĐỊA CHÍNH TRỊ · 4–8 TUẦN</span>
+        🕊️ MOU Mỹ-Iran (19/6) — Peace Deal Rebalancing
+      </div>
+      <div class="narrative-theme-body">Dầu giảm từ đỉnh ~$115 xuống $70-73 (−38%). CHF mất safe haven premium — SNB đã chính thức bỏ tham chiếu Trung Đông. JPY cũng mất một phần lực trú ẩn. EUR bị tổn thương kép: ECB hike 11/6 dựa trên dữ liệu dầu cũ, nay rủi ro "hike nhầm thời điểm" tăng cao. CAD bị double-hit: vừa petro-currency (dầu thấp) vừa yếu nền tảng macro. Peace deal vẫn là MOU — chưa treaty chính thức — rủi ro đảo chiều nếu đàm phán đổ vỡ.</div>
+      <div class="narrative-impact">
+        <span class="impact-tag impact-neg">CHF ↓ (safe haven −)</span>
+        <span class="impact-tag impact-neg">CAD ↓ (oil −)</span>
+        <span class="impact-tag impact-neg">EUR ↓ (hike sai timing)</span>
+        <span class="impact-tag impact-pos">AUD ↑ (risk-on)</span>
+        <span class="impact-tag impact-pos">JPY nhẹ ↓ safe haven</span>
+      </div>
+    </div>
+
+    <div class="narrative-theme">
+      <div class="narrative-theme-title">
+        <span style="background:#1e3a5f;color:#93c5fd;padding:1px 6px;border-radius:4px;font-size:10px">NGẮN HẠN · 1–2 TUẦN</span>
+        📅 NFP Week — 2/7 Catalyst + RBNZ 8/7
+      </div>
+      <div class="narrative-theme-body">Tuần này là tuần data dày đặc nhất trước FOMC 28–29/7. NFP tháng 6 (2/7, sớm 1 ngày vì lễ 4/7) là catalyst chính — consensus ~140K sau May +172K beat. Nếu NFP beat: USD tăng mạnh, Sep hike lên 75%+, EUR/JPY/CAD thêm áp lực. Nếu miss: USD pullback tạm thời nhưng narrative không đổi. RBNZ 8/7 là live meeting với 40% hike — NZD volatile. FOMC minutes cũng release tuần này — cơ hội đọc nội bộ Fed hawkish/dovish thực sự.</div>
+      <div class="narrative-impact">
+        <span class="impact-tag impact-pos">NFP beat → USD ↑↑</span>
+        <span class="impact-tag impact-neg">NFP miss → USD pullback tạm</span>
+        <span class="impact-tag impact-neu">NZD: RBNZ 8/7 binary event</span>
+        <span class="impact-tag impact-neu">FOMC minutes: risk cả chiều</span>
+      </div>
+    </div>
+    <div class="narrative-divider">🌐 Background Themes — Luôn hiện diện</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:#27272a;border-radius:8px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:600;color:#facc15;margin-bottom:3px">🇯🇵 BoJ Normalization Risk</div>
+        <div style="font-size:11px;color:#a1a1aa">USDJPY 161.74 — vùng nguy hiểm. Tamura ủng hộ hike tiếp, Bộ Tài chính từng chi 11.7T JPY. LF short JPY Z=−2.3 cực đoan. Bất kỳ surprise BoJ nào = JPY short-squeeze mạnh.</div>
+      </div>
+      <div style="background:#27272a;border-radius:8px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:600;color:#facc15;margin-bottom:3px">🇨🇦 CAD Structural Weakness</div>
+        <div style="font-size:11px;color:#a1a1aa">GDP âm 2 quý, dầu $70, LF+AM đồng thuận short. USDCAD đã phá 1.40 — BoC MPR 15/7 là catalyst tiếp theo cho kịch bản cắt giảm.</div>
+      </div>
+      <div style="background:#27272a;border-radius:8px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:600;color:#facc15;margin-bottom:3px">🇦🇺 RBA Hawkish vs AUD Crowded</div>
+        <div style="font-size:11px;color:#a1a1aa">RBA hawkish nhất nhóm nhưng COT AUD đã flip NET SHORT (Z=−0.3). AUDUSD 0.6887 cao — CPI Q2 (29/7) là quyết định. NAB đổi dự báo sang cắt giảm.</div>
+      </div>
+      <div style="background:#27272a;border-radius:8px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:600;color:#facc15;margin-bottom:3px">🇬🇧 BoE July 30 Live Meeting</div>
+        <div style="font-size:11px;color:#a1a1aa">Services CPI 3.7% sticky, MPC 7-2 (Greene + Pill muốn hike). GB10Y > US10Y = outlier. CPI Anh 15/7 là dữ liệu then chốt trước meeting.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- HEATMAP -->
+<div class="section" id="sec-heatmap">
+  <button class="section-btn open" onclick="toggle('heatmap','sec-heatmap')">
+    <div class="section-btn-inner">🔢 Stance Ranking — Hawkish → Dovish</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="section-content" id="heatmap">
+    <div class="heatmap">
+      <div class="hm-card">
+        <div class="hm-flag">🇺🇸</div><div class="hm-code">USD</div>
+        <div class="hm-score green">7.8</div>
+        <div class="hm-stance" style="background:#14532d;color:#bbf7d0">Hawkish</div>
+        <div class="hm-rank">#1</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇦🇺</div><div class="hm-code">AUD</div>
+        <div class="hm-score yellow">6.7</div>
+        <div class="hm-stance" style="background:#78350f;color:#fef08a">N-Hawk</div>
+        <div class="hm-rank">#2</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇯🇵</div><div class="hm-code">JPY</div>
+        <div class="hm-score yellow">6.6</div>
+        <div class="hm-stance" style="background:#78350f;color:#fef08a">N-Hawk</div>
+        <div class="hm-rank">#3</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇬🇧</div><div class="hm-code">GBP</div>
+        <div class="hm-score yellow">5.8</div>
+        <div class="hm-stance" style="background:#78350f;color:#fef08a">N-Hawk</div>
+        <div class="hm-rank">#4</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇪🇺</div><div class="hm-code">EUR</div>
+        <div class="hm-score blue">5</div>
+        <div class="hm-stance" style="background:#1e3a5f;color:#bfdbfe">Neutral</div>
+        <div class="hm-rank">#5</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇳🇿</div><div class="hm-code">NZD</div>
+        <div class="hm-score blue">5</div>
+        <div class="hm-stance" style="background:#1e3a5f;color:#bfdbfe">Neutral</div>
+        <div class="hm-rank">#6</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇨🇭</div><div class="hm-code">CHF</div>
+        <div class="hm-score red">3.8</div>
+        <div class="hm-stance" style="background:#7c2d12;color:#fed7aa">N-Dove</div>
+        <div class="hm-rank">#7</div>
+      </div>
+      <div class="hm-card">
+        <div class="hm-flag">🇨🇦</div><div class="hm-code">CAD</div>
+        <div class="hm-score red">3.5</div>
+        <div class="hm-stance" style="background:#7c2d12;color:#fed7aa">N-Dove</div>
+        <div class="hm-rank">#8</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:#52525b">
+      Score = Macro × 0.70 + Yếu tố phụ × 0.30 · <span class="green">≥7.5</span> Hawkish mạnh · <span class="yellow">5.5–7.4</span> N-Hawk · <span style="color:#93c5fd">4.5–5.4</span> Neutral · <span class="red">&lt;4.5</span> Dovish · 8 đồng tiền
+    </div>
+  </div>
+</div>
+<!-- SPOTLIGHT -->
+<div class="section" id="sec-spot">
+  <button class="section-btn open" onclick="toggle('spot','sec-spot')">
+    <div class="section-btn-inner">🎯 Pairs Spotlight — Confluence & Divergence</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="section-content" id="spot">
+    <div style="font-size:12px;color:#71717a;margin-bottom:10px">✅ = 3/3 lớp đồng thuận · ⚠️ = phân kỳ thận trọng · [Macro · Kỹ thuật · COT]</div>
+    <div style="font-size:12px;font-weight:600;color:#4ade80;margin-bottom:8px">✅ Confluence Mạnh Nhất (3/3)</div>
+    
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">USDCAD</span>
+        <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">USD #1 Hawkish (7.8, dot-plot 3.8%) vs CAD #8 N-Dove (3.5, GDP âm). USDCAD 1.4191, đã phá 1.40. Dầu $70.80. COT CAD LF+AM đồng thuận short Z=−1.6 — acceleration. NFP 2/7 + BoC MPR 15/7 là 2 catalyst tiếp theo. Conviction cao nhất USD pairs.</div>
+    </div>
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">USDCHF</span>
+        <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">USD hawkish vs CHF mất safe haven premium sau peace deal. SNB bỏ tham chiếu Trung Đông. USDCHF live: 0.8096. Yield spread US-CH +399bp — lớn nhất USD pairs. COT CHF Z-score −1.3.</div>
+    </div>
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">AUDCAD</span>
+        <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">RBA 4.35% (pause, N-Hawk) vs BoC neutral-dovish (2.25%). Divergence macro lớn nhất nhóm cross (7.6 vs 3.8). COT: AUD bullish, CAD sắp flip short. Yield AU-CA +136bp.</div>
+    </div>
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">EURUSD</span>
+        <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">3/3 đồng thuận GIẢM: USD hawkish > EUR (rủi ro ECB hike nhầm thời điểm). Phá xuống dưới 1.1450, ở mức thấp nhất từ tháng 6/2025. EUR long đang chững — rủi ro unwind.</div>
+    </div>
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">CADJPY</span>
+        <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">CAD yếu nhất nhóm (dầu giảm, technical recession) vs JPY đang bình thường hóa (BoJ hike 1%). Yield spread thu hẹp dần. COT xác nhận. 3/3 bearish CADJPY.</div>
+    </div>
+    <div style="font-size:12px;font-weight:600;color:#facc15;margin-bottom:8px;margin-top:12px">⚠️ Phân Kỳ — Cần Thận Trọng</div>
+    
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">USDJPY</span>
+        <div class="dots"><span class="dot-up">↑</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">USD #1(7.8) vs JPY #3(6.6). USDJPY 161.74 đã phá 160. Yield US-JP +178bp (không còn 333bp vì JP10Y=2.60%). COT JPY LF extreme short Z=−2.3 — Dealer counter-long. Rủi ro short-squeeze nếu BoJ surprise tháng 7. Tuyệt đối không mở mới.</div>
+    </div>
+    <div style="background:#0a0a0a;border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-weight:700;color:#fafafa;font-size:13px">AUDUSD</span>
+        <div class="dots"><span class="dot-up">↑</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+      </div>
+      <div style="font-size:11px;color:#71717a">AUD #2(6.7) vs USD #1(7.8) — USD macro mạnh hơn. COT AUD đã FLIP NET SHORT (Z=−0.3) — không còn crowded long. AUDUSD 0.6887 vẫn cao. CPI Q2 Úc (29/7) là catalyst. Thận trọng — chờ điều chỉnh về 0.67x.</div>
+    </div>
+  </div>
+</div>
+<!-- PAIRS TABLE -->
+<div class="section" id="sec-pairs">
+  <button class="section-btn" onclick="toggle('pairs','sec-pairs')">
+    <div class="section-btn-inner">📊 Bảng Cặp Tiền — Click để mở chi tiết</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="section-content" id="pairs" style="display:none">
+    <div class="tab-bar">
+      <button class="tab-btn tab-active" id="tab-usd" onclick="switchTab('usd')">USD Pairs</button>
+      <button class="tab-btn tab-inactive" id="tab-cross" onclick="switchTab('cross')">Cross Pairs</button>
+    </div>
+    <div style="font-size:11px;color:#52525b;margin-bottom:8px">↑ Bullish base · ↓ Bearish base · — Neutral &nbsp;|&nbsp; [Macro · Kỹ thuật · COT] · Click dòng để xem chi tiết</div>
+    <div id="usd-pairs">
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('eu')">
+          <span class="pair-code">EURUSD</span><span class="pair-price">1.1388</span>
+          <span class="pair-atr">~75-90p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="eu">
+          <div><span class="pair-detail-label">Cấu trúc: </span>Test vùng 1.14 — thấp nhất từ tháng 3/2026. S: 1.1350 / 1.1300 · R: 1.1450 / 1.1530</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>US10Y (4.38%) >> DE10Y (~2.45%) → spread ~+153bp nghiêng USD. Spread đang MỞ RỘNG.</div>
+          <div class="signal-box">3/3 đồng thuận GIẢM: macro (USD #1 7.8 > EUR #5 5.0), yield spread US-DE +153bp MỞ RỘNG. COT: EUR Z=+1.4 AM+LF đang tăng short dù vẫn net long — rủi ro unwind. NFP 2/7 là catalyst tiếp theo.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('uj')">
+          <span class="pair-code">USDJPY</span><span class="pair-price">161.74</span>
+          <span class="pair-atr">~120-150p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="uj">
+          <div><span class="pair-detail-label">Cấu trúc: </span>Phá vỡ 160 — tiến thêm lên 161.69. BoJ hike nhưng real yields Nhật vẫn âm. S: 160.00 / 158.50 · R: 163.00 / 165.00</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>US10Y (4.38%) > JP10Y (~2.60%) → spread ~+178bp nghiêng USD. Spread giảm nhẹ theo BoJ hike.</div>
+          <div class="signal-box">PHÂN KỲ: macro bullish USD, nhưng COT JPY short cực đoan (Z: −2.4) = rủi ro short-squeeze lớn. USDJPY 161.74 đã phá 160 — vùng nguy hiểm. Spread US-JP +178bp (không còn +333bp vì JP10Y tăng 2.60%). COT JPY LF short Z=−2.3 EXTREME — Dealer đang counter-long. Bộ Tài chính đã chi 11.7T JPY nhưng không hiệu quả. Tuyệt đối không mở mới.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('gu')">
+          <span class="pair-code">GBPUSD</span><span class="pair-price">1.3199</span>
+          <span class="pair-atr">~80-100p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="gu">
+          <div><span class="pair-detail-label">Cấu trúc: </span>Giảm từ 1.3450 sau FOMC hawkish. Test vùng 1.3160-1.3200. S: 1.3080 / 1.2950 · R: 1.3300 / 1.3450</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>GB10Y (~4.48%) > US10Y (4.38%) → spread ~36bp nghiêng GBP — outlier duy nhất trong USD pairs.</div>
+          <div class="signal-box">PHÂN KỲ: macro bearish (USD 7.8 > GBP 5.8) nhưng GB10Y (4.74%) > US10Y (4.38%) +36bp nghiêng GBP — MỞ RỘNG. COT GBP Z=+0.8 LF flip long. AM đang short mạnh vs Dealer long — chiến tranh vị thế. Chờ CPI Anh 15/7 + BoE 30/7.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('au')">
+          <span class="pair-code">AUDUSD</span><span class="pair-price">0.6887</span>
+          <span class="pair-atr">~55-70p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="au">
+          <div><span class="pair-detail-label">Cấu trúc: </span>AUD mạnh đáng kể — 0.69 (cao hơn dự báo trước). RBA hawkish vs USD mạnh — 2 lực nhưng AUD đang thắng nhờ risk-on. S: 0.6820 / 0.6750 · R: 0.6960 / 0.7030</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>AU10Y (~4.78%) > US10Y (4.38%) → spread ~+35bp nghiêng AUD nhưng đang thu hẹp.</div>
+          <div class="signal-box">PHÂN KỲ: AUD #2 (6.7, N-Hawk) vs USD #1 (7.8, Hawkish). COT AUD ĐÃ FLIP NET SHORT (Z=−0.3) — rủi ro unwind đã được giải phóng. AUDUSD 0.6887 cao — NAB đổi dự báo sang cắt giảm. CPI Q2 (29/7) là catalyst chính. Thận trọng — không mở swing long mới.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('nu')">
+          <span class="pair-code">NZDUSD</span><span class="pair-price">0.5636</span>
+          <span class="pair-atr">~50-65p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="nu">
+          <div><span class="pair-detail-label">Cấu trúc: </span>NZD yếu sau GDP Q1 miss + NZIER downgrade. NZDUSD ở vùng thấp 0.56. S: 0.5580 / 0.5520 · R: 0.5700 / 0.5760</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>NZ10Y (~4.39%) ≈ US10Y (4.38%) → spread ~+1bp gần bằng zero. Spread ổn định/thu hẹp nhẹ <span class="spread-tag spread-stable">→ Ổn định</span></div>
+          <div class="signal-box">PHÂN KỲ: macro USD #1(7.8) > NZD #6(5.0). Yield NZ-US +1bp = gần bằng zero → không hỗ trợ chiều nào. COT NZD Z=−1.1 short 6-week high. RBNZ 8/7 BINARY EVENT: hike 25bp (ANZ/UBS) → NZD short-squeeze; hold → short tăng thêm. Không mở vị thế trước event.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" style="background:rgba(74,222,128,0.05)" onclick="togglePair('uc')">
+          <span class="pair-code">USDCAD</span><span class="pair-price">1.4191</span>
+          <span class="pair-atr">~60-75p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="uc">
+          <div><span class="pair-detail-label">Cấu trúc: </span>Uptrend rõ ràng — đã phá 1.40, hiện 1.4191. USD hawkish vs CAD yếu (dầu $69-70, GDP âm). S: 1.4100 / 1.3980 · R: 1.4300 / 1.4450</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>US10Y (4.38%) > CA10Y (~3.42%) → spread ~+100bp nghiêng USD. Spread đang MỞ RỘNG.</div>
+          <div class="signal-box">✅ 3/3 đồng thuận TĂNG: macro divergence lớn nhất USD pairs (USD #1 7.8 vs CAD #8 3.5). Đã phá 1.40, hiện 1.4191. Yield +100bp MỞ RỘNG. COT CAD LF+AM đồng thuận short, Z=−1.6 acceleration. Dầu $70.80. BoC MPR 15/7 có thể mở đường cắt giảm. Target 1.43-1.45.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" style="background:rgba(74,222,128,0.05)" onclick="togglePair('us')">
+          <span class="pair-code">USDCHF</span><span class="pair-price">0.8098</span>
+          <span class="pair-atr">~50-65p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="us">
+          <div><span class="pair-detail-label">Cấu trúc: </span>Tăng mạnh sau FOMC — USD hawkish vs CHF mất safe haven premium. SNB bỏ tham chiếu Trung Đông. CHF yếu nhất 2+ tháng. S: 0.7980 / 0.7880 · R: 0.8200 / 0.8300</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>US10Y (4.38%) >> CH10Y (~0.39%) → spread ~+399bp — LỚN NHẤT USD pairs. Live FMP: USD/CHF = 0.8096.</div>
+          <div class="signal-box">✅ 3/3 đồng thuận TĂNG: macro (7.3 >> 4.5), yield spread khổng lồ +407bp, CHF mất safe haven premium. COT: CHF short tích lũy. Peace deal loại bỏ lực đỡ chính của CHF. SNB sẽ intervene nếu CHF mạnh bất thường — cản đà tăng CHF.</div>
+        </div>
+      </div>
+    </div>
+    <div id="cross-pairs" style="display:none">
+      <div style="font-size:11px;color:#52525b;margin-bottom:6px">✅ = 3/3 · ⚠️ = phân kỳ · Yield spread: <span class="spread-tag spread-widen">↗ Giãn rộng</span> = nghiêng base ccy · <span class="spread-tag spread-narrow">↘ Thu hẹp</span> = bất lợi base ccy · <span class="spread-tag spread-stable">→ Ổn định</span></div>
+      <div style="font-size:11px;font-weight:600;color:#71717a;padding:6px 12px 2px;background:#0a0a0a">EUR CROSSES</div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('ej')">
+          <span class="pair-code">EURJPY</span><span class="pair-price">184.19</span>
+          <span class="pair-atr">~130-160p</span>
+          <div class="dots"><span class="dot-nt">—</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="ej">
+          <div><span class="pair-detail-label">Cấu trúc: </span>EUR và JPY cùng hawkish — cả hai hike nhưng lực tương đương. S: 182.00 / 180.00 · R: 185.50 / 188.50</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>DE10Y (~2.45%) > JP10Y (~2.60%) → spread ~+25bp nghiêng EUR.  theo nhịp BoJ hike tiếp tục <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">PHÂN KỲ: EUR #5(5.0) vs JPY #3(6.6) — JPY macro tốt hơn. Yield DE-JP chỉ còn +25bp (từ +140bp!) vì JP10Y tăng 2.60% — gần bằng zero. COT JPY LF extreme short Z=−2.3. Không có bias rõ — yield không còn ủng hộ EUR, macro không ủng hộ EUR. Tránh hoàn toàn.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('eg')">
+          <span class="pair-code">EURGBP</span><span class="pair-price">0.8628</span>
+          <span class="pair-atr">~50-65p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="eg">
+          <div><span class="pair-detail-label">Cấu trúc: </span>ECB 2.25% vs BoE 3.75% (2 phiếu muốn 4%). GBP chiếm ưu thế về lãi suất. S: 0.8560 / 0.8490 · R: 0.8700 / 0.8760</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>GB10Y (~4.48%) >> DE10Y (~2.45%) → spread ~+-189bp nghiêng GBP.  khi USD tăng kéo DE yield theo <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">2/3 đồng thuận GIẢM EURGBP: GB10Y > DE10Y +-189bp đang giãn, GBP short-covering. Meeting BoE 30/7 là catalyst chính.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('ec')">
+          <span class="pair-code">EURCAD</span><span class="pair-price">1.6160</span>
+          <span class="pair-atr">~100-130p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="ec">
+          <div><span class="pair-detail-label">Cấu trúc: </span>ECB hawkish (2.25%) vs CAD dovish nhất nhóm (2.25%, GDP âm). EUR chiếm ưu thế chất lượng. S: 1.6050 / 1.5900 · R: 1.6300 / 1.6500</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>DE10Y (~2.45%) < CA10Y (~3.42%) → spread ~-97bp bất lợi EUR về yield.  khi CA yield yếu theo dầu giảm <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">3/3 đồng thuận TĂNG: macro EUR > CAD (5.8 vs 3.8), CAD bị kéo bởi dầu $69, kỹ thuật bullish. Yield bất lợi EUR nhưng CAD macro yếu trội hơn.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('es')">
+          <span class="pair-code">EURCHF</span><span class="pair-price">0.9222</span>
+          <span class="pair-atr">~60-80p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-nt">—</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="es">
+          <div><span class="pair-detail-label">Cấu trúc: </span>ECB hike vs SNB giữ 0%. CHF mất safe haven. Trend EUR/CHF tăng kể từ peace deal. S: 0.9150 / 0.9080 · R: 0.9300 / 0.9420</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>DE10Y (~2.45%) >> CH10Y (~0.39%) → spread ~+246bp nghiêng EUR.  sau ECB hike, SNB giữ nguyên <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">2/3 đồng thuận TĂNG: macro EUR > CHF (5.8 vs 4.5), yield spread +246bp giãn. COT CHF short tích lũy. Rủi ro: ECB hike nhầm thời điểm giảm EUR upside.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('en')">
+          <span class="pair-code">EURNZD</span><span class="pair-price">2.0204</span>
+          <span class="pair-atr">~130-160p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-nt">—</span><span class="dot-nt">—</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="en">
+          <div><span class="pair-detail-label">Cấu trúc: </span>ECB 2.25% vs RBNZ 2.25% — cùng rate nhưng trajectory khác. NZD chịu áp lực từ GDP miss. S: 2.0000 / 1.9800 · R: 2.0350 / 2.0600</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>DE10Y (~2.45%) < NZ10Y (~4.39%) → spread ~-154bp bất lợi EUR. <span class="spread-tag spread-stable">→ Ổn định</span></div>
+          <div class="signal-box">PHÂN KỲ: macro EUR nhỉnh (5.8 vs 5.2), nhưng yield bất lợi EUR rất lớn (-194bp). COT NZD chưa cực đoan. Không bias rõ — phân kỳ yield vs macro.</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#71717a;padding:6px 12px 2px;background:#0a0a0a">GBP CROSSES</div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('gj')">
+          <span class="pair-code">GBPJPY</span><span class="pair-price">213.47</span>
+          <span class="pair-atr">~150-190p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="gj">
+          <div><span class="pair-detail-label">Cấu trúc: </span>'Widow maker' — volatile nhất. GBP hưởng lợi vote BoE 7-2, JPY yếu neo 160. S: 211.50 / 209.00 · R: 215.50 / 218.00</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>GB10Y (~4.48%) >> JP10Y (~2.60%) → spread ~+214bp nghiêng GBP.  theo nhịp BoJ hike tiếp tục <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">2/3 đồng thuận TĂNG: macro và yield spread hỗ trợ GBP. COT: JPY extreme-short là rủi ro — nếu BoJ surprise, GBPJPY có thể giảm 500+ pips nhanh. Chỉ trade nếu chấp nhận volatility cực cao.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('gc')">
+          <span class="pair-code">GBPCAD</span><span class="pair-price">1.8729</span>
+          <span class="pair-atr">~110-140p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="gc">
+          <div><span class="pair-detail-label">Cấu trúc: </span>BoE 3.75% (2 phiếu hike) vs BoC 2.25% (GDP âm). GBP chiếm ưu thế rõ. S: 1.8550 / 1.8400 · R: 1.8950 / 1.9200</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>GB10Y (~4.48%) > CA10Y (~3.42%) → spread ~+136bp nghiêng GBP.  theo dầu giảm kéo CA yield <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">3/3 đồng thuận TĂNG: macro GBP > CAD (5.5 vs 3.8), yield +106bp giãn, kỹ thuật bullish. Dầu $69 tăng conviction bearish CAD. Setup sạch.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('gs')">
+          <span class="pair-code">GBPCHF</span><span class="pair-price">1.0687</span>
+          <span class="pair-atr">~80-100p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="gs">
+          <div><span class="pair-detail-label">Cấu trúc: </span>BoE 3.75% vs SNB 0%. CHF mất safe haven premium. Trend GBPCHF tăng mạnh. S: 1.0580 / 1.0480 · R: 1.0820 / 1.1000</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>GB10Y (~4.48%) >> CH10Y (~0.39%) → spread ~+435bp nghiêng GBP.  — CHF yếu sau peace deal, BoE giữ hawkish <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">3/3 đồng thuận TĂNG: macro (5.5 vs 4.5), yield spread +418bp giãn mạnh, CHF mất safe haven. COT CHF short tích lũy. Carry trade hấp dẫn nhóm GBP.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('gn')">
+          <span class="pair-code">GBPNZD</span><span class="pair-price">2.3417</span>
+          <span class="pair-atr">~160-200p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="gn">
+          <div><span class="pair-detail-label">Cấu trúc: </span>BoE 3.75% (hawkish) vs RBNZ 2.25% (hold, hike July uncertain). Macro favor GBP. S: 2.3100 / 2.2800 · R: 2.3700 / 2.4000</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>GB10Y (~4.48%) > NZ10Y (~4.39%) → spread ~+35bp nghiêng GBP. <span class="spread-tag spread-stable">→ Ổn định</span></div>
+          <div class="signal-box">PHÂN KỲ: macro GBP > NZD (5.5 vs 5.2) nhẹ, yield xấp xỉ bằng nhau. COT NZD bị ép sau GDP miss. Bias TĂNG nhẹ nhưng không conviction — chờ BoE/RBNZ July.</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#71717a;padding:6px 12px 2px;background:#0a0a0a">AUD CROSSES</div>
+      <div class="pair-row">
+        <button class="pair-btn" style="background:rgba(74,222,128,0.05)" onclick="togglePair('ac')">
+          <span class="pair-code">AUDCAD</span><span class="pair-price">0.9773</span>
+          <span class="pair-atr">~55-70p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="ac">
+          <div><span class="pair-detail-label">Cấu trúc: </span>RBA 4.35% (pause) vs BoC 2.25% (GDP âm). Rate divergence +210bp nhưng cả 2 COT đang short. S: 0.9700 / 0.9620 · R: 0.9880 / 1.0000</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>AU10Y (~4.78%) > CA10Y (~3.42%) → spread ~+135bp nghiêng AUD.  theo dầu giảm kéo CA yield <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">✅ 3/3 đồng thuận TĂNG: macro AUD #2(6.7) vs CAD #8(3.5) — divergence 3.2 điểm. Yield AU-CA +135bp ổn định. COT: AUD đã flip NET SHORT (Z=−0.3), CAD LF+AM short Z=−1.6. Cả 2 đều short → pair ổn định hơn kỳ vọng. Chờ CPI Q2 Úc (29/7) và BoC MPR (15/7) để xác định hướng mới.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" style="background:rgba(74,222,128,0.05)" onclick="togglePair('as')">
+          <span class="pair-code">AUDCHF</span><span class="pair-price">0.5577</span>
+          <span class="pair-atr">~55-70p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="as">
+          <div><span class="pair-detail-label">Cấu trúc: </span>AUD hawkish (4.35%) vs CHF mất safe haven (0%). Peace deal xóa lực đỡ CHF. S: 0.5500 / 0.5440 · R: 0.5640 / 0.5720</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>AU10Y (~4.78%) >> CH10Y (~0.39%) → spread ~+434bp — LỚN NHẤT toàn dashboard.  (CHF yếu, AU yield neo cao) <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">✅ 3/3 đồng thuận TĂNG: macro (7.6 >> 4.5), yield +434bp giãn mạnh, CHF mất premium. CẢNH BÁO: AUD crowded long — giữ vị thế, hạn chế mở mới ở giá cao.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('aj')">
+          <span class="pair-code">AUDJPY</span><span class="pair-price">111.39</span>
+          <span class="pair-atr">~100-130p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="aj">
+          <div><span class="pair-detail-label">Cấu trúc: </span>AUD hawkish nhất (7.6) vs JPY hawkish (6.2). Cả hai hike nhưng RBA cao hơn nhiều. S: 110.50 / 109.00 · R: 113.00 / 115.00</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>AU10Y (~4.78%) >> JP10Y (~2.60%) → spread ~+213bp nghiêng AUD.  từ từ theo BoJ hike tiếp <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">PHÂN KỲ: macro AUD ưu thế (7.6 > 6.2), yield +213bp. Nhưng COT AUD crowded extreme long + JPY extreme short — 2 lực cùng rủi ro unwind. Chỉ trade nếu có catalyst rõ.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('ae')">
+          <span class="pair-code">AUDEUR</span><span class="pair-price">0.6048</span>
+          <span class="pair-atr">~50-65p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-nt">—</span><span class="dot-nt">—</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="ae">
+          <div><span class="pair-detail-label">Cấu trúc: </span>AUD macro 7.6 vs EUR 5.8. Yield spread AU > DE rõ rệt. Tương đương EURAUD đảo chiều. S: 0.5980 / 0.5920 · R: 0.6100 / 0.6180</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>AU10Y (~4.78%) >> DE10Y (~2.45%) → spread ~+233bp nghiêng AUD. <span class="spread-tag spread-stable">→ Ổn định</span></div>
+          <div class="signal-box">Bias TĂNG nhẹ: macro AUD > EUR (7.6 > 5.8), yield +233bp. COT AUD crowded — cản lớn. ECB hike nhầm thời điểm làm EUR yếu thêm. Không conviction mạnh.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('an')">
+          <span class="pair-code">AUDNZD</span><span class="pair-price">1.2220</span>
+          <span class="pair-atr">~50-70p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-nt">—</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="an">
+          <div><span class="pair-detail-label">Cấu trúc: </span>RBA 4.35% vs RBNZ 2.25%. Rate divergence +210bp — lớn nhất cặp Antipodean. NZD bị kéo bởi GDP miss Q1. S: 1.2150 / 1.2060 · R: 1.2350 / 1.2500</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>AU10Y (~4.78%) > NZ10Y (~4.39%) → spread ~+34bp nghiêng AUD. <span class="spread-tag spread-stable">→ Ổn định</span></div>
+          <div class="signal-box">2/3 đồng thuận TĂNG: macro AUD > NZD (7.6 vs 5.2), rate divergence +210bp rõ. COT AUD crowded cản sức tăng. NZD GDP miss Q1 — ANZ vẫn thấy hike July likely. Setup nhẹ — chờ RBNZ July 8.</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#71717a;padding:6px 12px 2px;background:#0a0a0a">NZD CROSSES</div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('nj')">
+          <span class="pair-code">NZDJPY</span><span class="pair-price">91.15</span>
+          <span class="pair-atr">~90-120p</span>
+          <div class="dots"><span class="dot-nt">—</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="nj">
+          <div><span class="pair-detail-label">Cấu trúc: </span>RBNZ 2.25% (hike July uncertain) vs BoJ 1.00% (hike tiếp). NZD GDP miss làm yếu case bullish. S: 90.50 / 89.20 · R: 92.50 / 94.00</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>NZ10Y (~4.39%) >> JP10Y (~2.60%) → spread ~+179bp nghiêng NZD.  theo nhịp BoJ hike <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">PHÂN KỲ: yield ủng hộ NZD (+179bp) nhưng COT JPY extreme-short là rủi ro nổ lớn. Macro NZD (5.2) > JPY (6.2) bị đảo ngược — JPY hawkish hơn dài hạn. COT lệch extreme cả 2 chiều. Tránh.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" style="background:rgba(74,222,128,0.05)" onclick="togglePair('nc')">
+          <span class="pair-code">NZDCAD</span><span class="pair-price">0.7997</span>
+          <span class="pair-atr">~65-85p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="nc">
+          <div><span class="pair-detail-label">Cấu trúc: </span>RBNZ 2.25% (hike July likely) vs BoC 2.25% (GDP âm, dầu $69). CAD dovish nhất về outlook. S: 0.7950 / 0.7880 · R: 0.8080 / 0.8180</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>NZ10Y (~4.39%) > CA10Y (~3.42%) → spread ~+101bp nghiêng NZD.  theo dầu giảm kéo CA yield <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">✅ 3/3 đồng thuận TĂNG: macro NZD > CAD (5.2 vs 3.8), yield +97bp giãn, dầu $69 kéo CAD. COT CAD sắp flip short. Conviction tốt — NZD không cần hike để thắng CAD.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('ns')">
+          <span class="pair-code">NZDCHF</span><span class="pair-price">0.4564</span>
+          <span class="pair-atr">~55-70p</span>
+          <div class="dots"><span class="dot-up">↑</span><span class="dot-up">↑</span><span class="dot-up">↑</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="ns">
+          <div><span class="pair-detail-label">Cấu trúc: </span>RBNZ 2.25% (hike likely) vs SNB 0% (safe haven đang mất lực). Spread lãi suất +225bp. S: 0.4500 / 0.4440 · R: 0.4620 / 0.4700</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>NZ10Y (~4.39%) >> CH10Y (~0.39%) → spread ~+400bp nghiêng NZD.  (CHF yếu sau peace deal) <span class="spread-tag spread-widen">↗ Giãn rộng</span></div>
+          <div class="signal-box">✅ 3/3 đồng thuận TĂNG: macro NZD > CHF (5.2 vs 4.5), yield +409bp giãn mạnh, CHF mất safe haven. COT CHF short tích lũy. Carry trade hấp dẫn — thận trọng vì NZD GDP miss.</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#71717a;padding:6px 12px 2px;background:#0a0a0a">JPY CROSSES</div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('cj')">
+          <span class="pair-code">CADJPY</span><span class="pair-price">113.96</span>
+          <span class="pair-atr">~90-120p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="cj">
+          <div><span class="pair-detail-label">Cấu trúc: </span>CAD yếu nhất nhóm vs JPY đang bình thường hóa. Dầu $69 kéo CAD, BoJ hike 1% hỗ trợ JPY. S: 112.80 / 111.00 · R: 115.50 / 117.50</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>CA10Y (~3.42%) > JP10Y (~2.60%) → spread ~+78bp nghiêng CAD.  mạnh theo BoJ hike + dầu giảm kéo CA yield <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">✅ 3/3 đồng thuận GIẢM CADJPY: macro (JPY 6.2 > CAD 3.8), dầu $69, yield spread thu hẹp mạnh. COT CAD sắp flip short + JPY extreme short — stop rộng.</div>
+        </div>
+      </div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('sj')">
+          <span class="pair-code">CHFJPY</span><span class="pair-price">199.71</span>
+          <span class="pair-atr">~120-150p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-dn">↓</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="sj">
+          <div><span class="pair-detail-label">Cấu trúc: </span>CHF mất safe haven (0%) vs JPY đang hike (1.00%). CHF mất safe haven (0%) · JPY đang normalize (1.00%) · CH10Y 0.39% < JP10Y 2.60%. S: 198.50 / 196.50 · R: 202.00 / 205.00</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>CH10Y (~0.39%) < JP10Y (~2.60%) → spread ~-221bp bất lợi CHF.  (BoJ hike → JP10Y tăng, CHF yield neo thấp) <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">3/3 đồng thuận GIẢM CHFJPY: CHF #7(3.8) << JPY #3(6.6). Yield CH-JP = −221bp — ĐẢO CHIỀU hoàn toàn (CHF10Y 0.39% < JP10Y 2.60%!) → bất lợi CHF nặng. COT: CHF AM+LF short (Z=−1.2); JPY LF extreme short (Z=−2.3). Rủi ro squeeze 2 chiều — stop đặc biệt rộng.</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#71717a;padding:6px 12px 2px;background:#0a0a0a">OTHER CROSSES</div>
+      <div class="pair-row">
+        <button class="pair-btn" onclick="togglePair('sc')">
+          <span class="pair-code">CADCHF</span><span class="pair-price">0.5706</span>
+          <span class="pair-atr">~50-65p</span>
+          <div class="dots"><span class="dot-dn">↓</span><span class="dot-nt">—</span><span class="dot-dn">↓</span></div>
+          <span style="color:#71717a;font-size:12px">▼</span>
+        </button>
+        <div class="pair-detail" id="sc">
+          <div><span class="pair-detail-label">Cấu trúc: </span>CAD dovish (3.8, dầu $69) vs CHF neutral (4.5, safe haven suy yếu). 2 đồng tiền yếu nhóm nhưng CAD yếu hơn tuyệt đối. S: 0.5650 / 0.5590 · R: 0.5780 / 0.5850</div>
+          <div style="margin-top:5px"><span class="pair-detail-label">Bond Yield: </span>CA10Y (~3.42%) >> CH10Y (~0.39%) → spread ~+299bp nghiêng CAD.  (CA yield giảm theo dầu) <span class="spread-tag spread-narrow">↘ Thu hẹp</span></div>
+          <div class="signal-box">PHÂN KỲ: yield ủng hộ CAD (+299bp đang thu hẹp), nhưng macro CAD yếu hơn CHF. Yield thu hẹp + CAD fundamental xấu = bias nhẹ GIẢM CADCHF nhưng không conviction mạnh.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- COT -->
+<div class="section" id="sec-cot">
+  <button class="section-btn" onclick="toggle('cot','sec-cot')">
+    <div class="section-btn-inner">👥 COT — CFTC Financial TFF: Dealer · Asset Manager · Leveraged Funds (cutoff 23/06/2026)</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="section-content" id="cot" style="display:none">
+    
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇺🇸</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">USD Index</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">LF Net-Long đỉnh 15 tuần</span>
+        <span class="cot-zscore zscore-long">Z: +1.8</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-short">−18,000</div>
+          <div class="cot-group-flow ">→ Ổn định</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-long">+24,000</div>
+          <div class="cot-group-flow flow-long">↑ Tăng long</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Leveraged Funds</div>
+          <div class="cot-group-net flow-long">+10,278</div>
+          <div class="cot-group-flow flow-long">↑ Tăng long</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Buy-side (AM+LF): +34,278 net long · AM và LF đồng thuận long USD · Xác nhận narrative hawkish Fed · Z=+1.8 lệch rõ nhưng chưa cực đoan — còn room tăng thêm nếu NFP beat</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇪🇺</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">EUR</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">AM Long đang phân kỳ với LF</span>
+        <span class="cot-zscore zscore-long">Z: +1.4</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-short">−275,330</div>
+          <div class="cot-group-flow flow-long">↑ Giảm short</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-long">+254,730</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short +17.9K</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Leveraged Funds</div>
+          <div class="cot-group-net flow-short">−15,410</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short +6.5K</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Buy-side (AM+LF): +239,320 net long — nhưng cả AM và LF đều đang TĂNG SHORT · AM đang unwind long dần · LF đã flip bearish · Z=+1.4 đang giảm dần — rủi ro EUR long unwind lớn nếu EURUSD phá 1.13</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇯🇵</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">JPY</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">LF Extreme Short — Dealer Counter</span>
+        <span class="cot-zscore zscore-extreme-short">Z: −2.3</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-long">+118,390</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short nhẹ</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-short">−78,364</div>
+          <div class="cot-group-flow flow-long">↑ Cover short nhẹ</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Leveraged Funds</div>
+          <div class="cot-group-net flow-short">−97,092</div>
+          <div class="cot-group-flow flow-neutral">→ Ổn định (−0.3K)</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Buy-side (AM+LF): −175,456 net short EXTREME · LF short JPY −97K là nhóm nguy hiểm nhất · Dealer đang net LONG +118K = hedge client risk · Z=−2.3 cực đoan · USDJPY 161.74 — bất kỳ BoJ surprise hoặc MoF intervention = short-squeeze dữ dội · STOP RỘNG mọi cặp JPY</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇬🇧</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">GBP</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">AM vs Dealer: Chiến tranh vị thế</span>
+        <span class="cot-zscore zscore-long">Z: +0.8</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-long">+159,992</div>
+          <div class="cot-group-flow flow-long">↑ Tăng long mạnh +55K</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-short">−149,424</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short mạnh +32K</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Leveraged Funds</div>
+          <div class="cot-group-net flow-long">+7,567</div>
+          <div class="cot-group-flow flow-short">↓ Short tăng nhẹ</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Buy-side (AM+LF): −141,857 net short — AM đang BET GBP YẾU mạnh (+32K short) · Dealer counter với +55K long · LF trung lập · Phân kỳ lớn giữa sell-side (bullish GBP) và buy-side (bearish) · BoE 30/7 sẽ phân giải — CPI Anh 15/7 là data quan trọng nhất</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇦🇺</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">AUD</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">Đã flip Net-Short (Legacy Z: −0.3)</span>
+        <span class="cot-zscore zscore-neutral">Z: −0.3</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-long">N/A</div>
+          <div class="cot-group-flow ">Legacy report</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-long">N/A</div>
+          <div class="cot-group-flow ">Legacy report</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Non-Commercial</div>
+          <div class="cot-group-net flow-short">−13,012</div>
+          <div class="cot-group-flow flow-short">↓ Flip net short</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Legacy Non-Commercial: −13,012 net short · ĐÃ ĐẢO CHIỀU từ extreme long (Z=+2.6) xuống net short (Z=−0.3) trong 2 tuần · Change: Long −2.1K, Short +6.7K · AUD không còn crowded long — rủi ro unwind đã được giải phóng phần lớn · AUDUSD 0.6887 — CPI Q2 29/7 sẽ quyết định hướng tiếp theo</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇳🇿</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">NZD</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">Net-short 6-week high</span>
+        <span class="cot-zscore zscore-short">Z: −1.1</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-long">N/A</div>
+          <div class="cot-group-flow ">Legacy report</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-long">N/A</div>
+          <div class="cot-group-flow ">Legacy report</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Non-Commercial</div>
+          <div class="cot-group-net flow-short">−37,000</div>
+          <div class="cot-group-flow flow-short">↓ Short tăng tuần 4</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Legacy Non-Commercial: −37,000 net short · 6-week high short · Short tăng 4 tuần liên tiếp — thị trường đang bet NZD yếu · RBNZ 8/7 là binary event: nếu hike 25bp → short-squeeze NZD mạnh; nếu hold → short tăng thêm · Z=−1.1 chưa cực đoan — còn room tiếp tục nếu RBNZ dovish</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇨🇦</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">CAD</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">LF+AM đồng thuận short — mạnh nhất</span>
+        <span class="cot-zscore zscore-short">Z: −1.6</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-long">+166,150</div>
+          <div class="cot-group-flow flow-long">↑ Tăng long +17K</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-short">−83,868</div>
+          <div class="cot-group-flow flow-short">↓ Giảm net nhẹ</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Leveraged Funds</div>
+          <div class="cot-group-net flow-short">−83,377</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short mạnh +18K</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Buy-side (AM+LF): −167,245 net short · LF tăng short +18K tuần — ACCELERATION bearish · AM và LF đồng thuận short CAD mạnh nhất nhóm · Dealer hedge client net long · Z=−1.6 tiến gần extreme · USDCAD 1.4191 — BoC MPR 15/7 là catalyst cắt giảm tiếp theo · Target 1.43-1.45</div>
+    </div>
+    <div class="cot-card">
+      <div class="cot-head">
+        <span style="font-size:16px">🇨🇭</span>
+        <span style="font-weight:700;color:#fafafa;font-size:13px">CHF</span>
+        <span style="font-size:11px;background:#27272a;color:#a1a1aa;border-radius:4px;padding:2px 7px">AM+LF cùng short, tích lũy dần</span>
+        <span class="cot-zscore zscore-short">Z: −1.2</span>
+      </div>
+      <div class="cot-group-row">
+        <div class="cot-group-box">
+          <div class="cot-group-label">Dealer</div>
+          <div class="cot-group-net flow-long">+69,151</div>
+          <div class="cot-group-flow flow-long">↑ Tăng long +4.8K</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Asset Manager</div>
+          <div class="cot-group-net flow-short">−39,769</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short nhẹ</div>
+        </div>
+        <div class="cot-group-box">
+          <div class="cot-group-label">Leveraged Funds</div>
+          <div class="cot-group-net flow-short">−13,816</div>
+          <div class="cot-group-flow flow-short">↓ Tăng short nhẹ</div>
+        </div>
+      </div>
+      <div class="cot-buyside">Buy-side (AM+LF): −53,585 net short · AM và LF cùng build short CHF sau peace deal · Dealer hedge net long · Z=−1.2 chưa cực đoan — còn dư địa short CHF tiếp tục · USDCHF 0.8098 — yield spread +399bp khổng lồ hỗ trợ USDCHF tăng · Safe haven premium tiếp tục fade</div>
+    </div>
+  </div>
+</div>
+<!-- RISK CALENDAR -->
+<div class="section" id="sec-risk">
+  <button class="section-btn" onclick="toggle('risk','sec-risk')">
+    <div class="section-btn-inner">🔴 Lịch Rủi Ro Cao — Thận Trọng Khi Mở Lệnh Mới</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="section-content" id="risk" style="display:none">
+    <div class="risk-row"><div class="risk-date">26/6/2026</div><div class="risk-event">CPI Tokyo tháng 6 — BoJ early signal 🇯🇵 (vừa công bố hôm nay)</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">26/6/2026</div><div class="risk-event">US PCE tháng 5 — đã công bố in-line (4.1%/3.4%) 🇺🇸</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">26/6/2026</div><div class="risk-event">US GDP Q1 Final — revised +2.1% (đã công bố) 🇺🇸</div><div class="risk-med">🟡 TB</div></div>
+    <div class="risk-row"><div class="risk-date">1/7/2026</div><div class="risk-event">HICP flash Eurozone tháng 6 — kiểm chứng ECB sau peace deal 🇪🇺</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">2/7/2026</div><div class="risk-event">NFP tháng 6 + Unemployment — trigger chính cho Fed tháng 7 🇺🇸</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">3/7/2026</div><div class="risk-event">CPI Thụy Sĩ tháng 6 🇨🇭</div><div class="risk-med">🟡 TB</div></div>
+    <div class="risk-row"><div class="risk-date">8/7/2026</div><div class="risk-event">Họp RBNZ — thị trường chia rẽ: UBS/ANZ thấy hike 25bp; thị trường OIS ~60% hold 🇳🇿</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">14/7/2026</div><div class="risk-event">CPI Mỹ tháng 6 — tariff inflation narrative 🇺🇸 🇪🇺 🇯🇵</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">15/7/2026</div><div class="risk-event">Họp BoC + MPR — lần đầu có press conference 🇨🇦</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">15/7/2026</div><div class="risk-event">CPI Anh + Labor tháng 6 — quyết định MPC 30/7 🇬🇧</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">23/7/2026</div><div class="risk-event">Họp ECB — guidance sau hike 11/6 và peace deal 🇪🇺</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">25/7/2026</div><div class="risk-event">CPI toàn quốc Nhật tháng 6 🇯🇵</div><div class="risk-med">🟡 TB</div></div>
+    <div class="risk-row"><div class="risk-date">28-29/7/2026</div><div class="risk-event">Họp FOMC — 62% thị trường định giá hike tháng 9 (giảm từ 68%) 🇺🇸</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">29/7/2026</div><div class="risk-event">CPI Q2/2026 Úc — đỉnh chu kỳ RBA? 🇦🇺</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">30/7/2026</div><div class="risk-event">Họp MPC BoE + MPR — 'Genuinely live meeting' 🇬🇧</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row"><div class="risk-date">30-31/7/2026</div><div class="risk-event">Họp BoJ — Tamura ủng hộ hike tiếp · USDJPY đang ở 161.69 🇯🇵</div><div class="risk-high">🔴 Cao</div></div>
+    <div class="risk-row" style="border-bottom:none"><div class="risk-date">2/9/2026</div><div class="risk-event">Họp RBNZ — MPS đầy đủ, quyết định sau tháng 7 🇳🇿</div><div class="risk-high">🔴 Cao</div></div>
+  </div>
+</div>
+<!-- CURRENCY CARDS -->
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('aud')">
+    <span class="cur-flag">🇦🇺</span>
+    <div class="cur-info">
+      <div><span class="cur-code">AUD</span><span class="cur-stance" style="background:#78350f;color:#fef08a">N-Hawk (RBA pause · NAB đổi sang cắt giảm · COT flip short)</span></div>
+      <div class="cur-bank">Reserve Bank of Australia · Michele Bullock</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score yellow">6.7</div>
+      <div class="cur-sub-scores">M:7.2 S:5.5</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:67%;background:#facc15"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">4.35% · Giữ nguyên 16/6/2026 sau 3 hike liên tiếp Feb-Mar-May</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>4.2% YoY (tháng 4), trimmed mean 3.4% — vượt mục tiêu 2-3% rõ rệt</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Lao động: </span>Thất nghiệp 4.5% (tháng 4) — việc làm giảm 18,600 — bắt đầu yếu dần</div>
+  </div>
+  <div class="cur-body" id="aud">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">RBA từng là NHTW hawkish nhất nhóm — đã pause sau 3 hike liên tiếp với 3 hike liên tiếp Feb-Mar-May lên 4.35%. Lạm phát lõi trimmed mean dự báo đỉnh 3.7-3.8% Q2-Q3 2026. Bullock cảnh báo có thể hike thêm bất kỳ lúc nào nếu kỳ vọng lạm phát mất neo. Dầu giảm về $69-70 làm hạ nhẹ peak CPI dự báo — Westpac revise từ 5.0% xuống 4.7%.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text">Bullock: 'Không loại trừ khả năng tăng lãi suất thêm.' Thị trường phân hóa mạnh hơn: NAB (9/6) đảo ngược hoàn toàn — 'next move là cắt giảm, không phải hike'; Westpac vẫn giữ dự báo hike tháng 8 và 9; CBA kỳ vọng giữ nguyên. CPI Q2 quarterly (29/7) là quyết định then chốt — dự báo đỉnh ~4.7% thay vì 4.8-4.9% trước đây do dầu giảm.</div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">16/6/2026 — RBA giữ nguyên 4.35% sau 3 hike liên tiếp. Phát biểu kèm vẫn cứng rắn. 9/6/2026 — NAB đảo dự báo: 'next move là cắt giảm'. Dầu WTI về $69 (tuần lớn nhất -10%) — hạ peak inflation outlook nhẹ. CPI Q2 (29/7) là xúc tác chính tiếp theo.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">29/7/2026</span>CPI Q2/2026 — dự báo đỉnh chu kỳ 4.8-4.9%, quyết định then chốt</div>
+      <div><span class="upcoming-date">10-11/8/2026</span>Họp RBA + SoMP — quyết định lãi suất tiếp theo</div>
+      <div><span class="upcoming-date">20/8/2026</span>Labor tháng 7 — xác nhận xu hướng thị trường lao động</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Yếu tố Trung Quốc<span class="secondary-score">5.8/10</span></div>
+      <div class="secondary-text">Trung Quốc là đối tác thương mại lớn nhất Úc. GDP Q1/2026 đạt 5.0% YoY (vượt 4.8%). Tuy nhiên Manufacturing PMI hạ từ 52.2 (tháng 4) còn 51.8 (tháng 5) — đà tăng chậm dần là rủi ro trung hạn. Peace deal Mỹ-Iran và dầu hạ về $69-70 (pre-war) hỗ trợ nhẹ kinh tế toàn cầu nhưng cũng làm hạ CPI peak cho Úc — giảm nhẹ áp lực hike tiếp theo của RBA. Westpac revise peak CPI từ 5.0% xuống 4.7%.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-02-10:</span> <span class="history-score yellow">6.5</span> — RBA hike lần 1 (25bp lên 3.85%) — mở đầu chu kỳ thắt chặt</div>
+      <div class="history-item"><span class="history-date">2026-04-08:</span> <span class="history-score yellow">7.4</span> — RBA hike lần 2 lên 4.10% — thất nghiệp giảm xuống 4.1%</div>
+      <div class="history-item"><span class="history-date">2026-05-20:</span> <span class="history-score green">7.9</span> — RBA hike lần 3 lên 4.35% — CPI 4.2%, cảnh báo đỉnh 4.8-4.9% Q2</div>
+      <div class="history-item"><span class="history-date">2026-06-16:</span> <span class="history-score green">7.6</span> — RBA giữ nguyên, Bullock vẫn hawkish — lao động yếu dần kéo điểm xuống nhẹ</div>
+    </div></div>
+    <div class="meta-grid">
+      <div class="meta-box"><div class="meta-label">CPI Release</div><div class="meta-val">CPI Q2 quarterly: 29/7/2026</div><div class="meta-note">Đỉnh chu kỳ 4.8-4.9% Q2 — quyết định then chốt của RBA</div></div>
+      <div class="meta-box"><div class="meta-label">Labor Release</div><div class="meta-val">Labor tháng 5: 25/6/2026</div><div class="meta-note">Thất nghiệp 4.5% — yếu nhất từ 11/2021 — bắt đầu đáng lo ngại</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('usd')">
+    <span class="cur-flag">🇺🇸</span>
+    <div class="cur-info">
+      <div><span class="cur-code">USD</span><span class="cur-stance" style="background:#14532d;color:#bbf7d0">Hawkish (dot-plot 3.8% · PCE in-line · NFP 2/7 catalyst)</span></div>
+      <div class="cur-bank">Federal Reserve · Kevin Warsh</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score green">7.8</div>
+      <div class="cur-sub-scores">M:7.9 S:7.5</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:78%;background:#4ade80"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">3.50%–3.75% · Giữ nguyên 12-0 tại phiên họp đầu của Warsh (17/6/2026)</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>4.2% YoY tháng 5, core 2.9% — PCE 4.1% tháng 5 (in-line, công bố 26/6) — Core PCE 3.4% cao nhất từ 2023</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Lao động: </span>NFP +172K tháng 5 (vượt xa dự báo 85K), thất nghiệp 4.3%, lương +3.4% YoY</div>
+  </div>
+  <div class="cur-body" id="usd">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">Warsh (Chủ tịch mới từ 22/5/2026) giữ nguyên nhưng dot-plot đảo chiều mạnh: median 3.8% (từ 3.4%), 9/18 thành viên nghiêng hike. Hawkish KHÔNG phải từ giá dầu (đã về mức pre-war $69-70) mà từ tariff Trump + lao động bền vững bất ngờ. PCE tháng 5 công bố 26/6: headline 4.1% (in-line), core PCE 3.4% — cao nhất từ 2023. Dầu giảm đã giúp PCE không vượt dự báo, nhưng core inflation vẫn cao dai dẳng. USD hawkish 'độc lập' — đây là điểm khác biệt then chốt với EUR/BoE.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text">Warsh: 'Inflation remains well above 2% goal — that's been going on for more than five years.' Loại bỏ forward guidance từ statement — tập trung data. New York Fed's Williams (26/6): 'Inflationary pressures expected to moderate but remain too high.' Thị trường định giá ~62-63% hike tháng 9, ~80% hike tháng 12. 9/18 thành viên nhìn nhận rủi ro lạm phát nghiêng về upside. FOMC dot-plot: PCE 2026 tăng lên 3.6%, core PCE 3.3%.</div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">26/6/2026 — PCE tháng 5 in-line: headline 4.1%, core 3.4%. DXY giảm nhẹ 101.1 sau data (từ 101.7 đỉnh tuần). Xác suất hike tháng 9 hạ nhẹ từ 68% xuống 62-63% — thị trường scale back nhẹ nhưng narrative hawkish vẫn nguyên vẹn. 17/6/2026 — FOMC 12-0 giữ nguyên. Dot-plot median 3.8%.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">2/7/2026</span>NFP tháng 6 — kiểm chứng đà bền vững lao động (dự báo ~140K)</div>
+      <div><span class="upcoming-date">14/7/2026</span>CPI tháng 6 — xác nhận tariff inflation narrative — quyết định hướng FOMC tháng 7</div>
+      <div><span class="upcoming-date">28-29/7/2026</span>Họp FOMC — 62% định giá hike tháng 9, 80% hike tháng 12</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Tariff Inflation + Lao động bền vững<span class="secondary-score">7.0/10</span></div>
+      <div class="secondary-text">Thuế quan Trump là nguồn lạm phát chính Fed viện dẫn — hoàn toàn độc lập với giá dầu. PCE 4.1% (headline), core PCE 3.4% — cao nhất từ 2023. Dầu về $69-70 giúp không vượt dự báo nhưng core vẫn cứng. NFP 172K (vs dự báo 85K) + revision +93K tháng 3-4 khiến Fed có dư địa hawkish. FOMC dot-plot: PCE 2026 dự báo 3.6%, core PCE 3.3%. Đây là yếu tố 'khác chất' — dầu hạ không giải quyết được tariff inflation hay lao động mạnh. DXY tuần này +0.3% bất chấp PCE in-line.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-01-15:</span> <span class="history-score yellow">6.0</span> — Fed giữ nguyên, thị trường còn kỳ vọng cắt giảm trong 2026</div>
+      <div class="history-item"><span class="history-date">2026-05-22:</span> <span class="history-score yellow">6.8</span> — Warsh nhậm chức — thị trường bắt đầu định giá lập trường hawkish hơn</div>
+      <div class="history-item"><span class="history-date">2026-06-05:</span> <span class="history-score yellow">7.0</span> — CPI 4.2% + NFP +172K — củng cố lo ngại lạm phát trước FOMC</div>
+      <div class="history-item"><span class="history-date">2026-06-17:</span> <span class="history-score yellow">7.3</span> — FOMC dot-plot đảo hawkish (3.4%→3.8%), phiên đầu Warsh — USD tăng mạnh</div>
+      <div class="history-item"><span class="history-date">2026-06-26:</span> <span class="history-score yellow">7.3</span> — PCE tháng 5 in-line (4.1%/3.4%) — hike Sep 62-63%, DXY nhẹ về 101.1 — score giữ nguyên</div>
+    </div></div>
+    <div class="meta-grid">
+      <div class="meta-box"><div class="meta-label">PCE Release</div><div class="meta-val">PCE tháng 5: đã công bố 26/6</div><div class="meta-note">Headline 4.1%, Core PCE 3.4% — in-line, cao nhất từ 2023. CPI tháng 6 công bố 14/7/2026</div></div>
+      <div class="meta-box"><div class="meta-label">Labor Release</div><div class="meta-val">NFP tháng 5: đã công bố 5/6</div><div class="meta-note">+172K vs dự báo 85K. NFP tháng 6 công bố 2/7/2026 — catalyst chính cho FOMC tháng 7</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('eur')">
+    <span class="cur-flag">🇪🇺</span>
+    <div class="cur-info">
+      <div><span class="cur-code">EUR</span><span class="cur-stance" style="background:#1e3a5f;color:#bfdbfe">Neutral (ECB hike sai timing · dầu giảm xóa lạm phát · GDP 0.8%)</span></div>
+      <div class="cur-bank">European Central Bank · Christine Lagarde</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score blue">5</div>
+      <div class="cur-sub-scores">M:5.2 S:4.5</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:50%;background:#93c5fd"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">2.25% (deposit) · Tăng +25bp lần đầu từ 2023 (11/6/2026)</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>HICP 3.2% flash tháng 5, core 2.5% — ECB nâng dự báo 2026 lên 3.0%</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Tăng trưởng: </span>GDP 2026 dự báo 0.8% — Germany PMI tháng 6 vẫn thu hẹp</div>
+  </div>
+  <div class="cur-body" id="eur">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">ECB tăng 11/6 — TRƯỚC MOU Mỹ-Iran (19/6) — dựa trên lo ngại lạm phát từ đỉnh giá dầu. Dầu đã giảm mạnh về ~$72 Brent, $69-70 WTI (pre-war, giảm ~35-38% từ đỉnh). Lagarde: 'Không cần phản ứng mạnh hơn với Trung Đông.' Thị trường pared back kỳ vọng hike thêm — ~50% xác suất hike thêm trong 2026. Rủi ro ECB hike nhầm thời điểm khi nguồn lạm phát dầu đang biến mất nhanh hơn dự báo.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text">Lagarde: cam kết neo lạm phát 2% trung hạn. Lane hạ dự báo GDP 2026 xuống 0.8%. HICP tháng 5 = 3.2%, core 2.5% — ECB nâng dự báo 2026 lên 3.0%. Dầu giảm ~38% làm giảm xác suất hike thêm. Meeting 23/7 sẽ là câu trả lời — HICP flash tháng 6 (1/7) là dữ liệu quan trọng nhất trước đó.</div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">26/6/2026 — EUR/USD ~1.14, down từ đỉnh 1.20 đầu năm. Tuần này EUR/USD -1% theo đà hawkish Fed/USD. 11/6/2026 — ECB tăng 25bp lên 2.25% — lần đầu từ 2023. 8 ngày sau, MOU Mỹ-Iran khiến dầu giảm mạnh — ECB ở thế 'hike nhầm thời điểm'. EURUSD hiện ~1.14 (thấp nhất từ tháng 3/2026).</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">1/7/2026</span>HICP flash tháng 6 — kiểm chứng ECB sau peace deal</div>
+      <div><span class="upcoming-date">23/7/2026</span>Họp ECB — guidance hậu hike, dầu hạ có làm ECB bớt hawkish?</div>
+      <div><span class="upcoming-date">30/7/2026</span>GDP Eurozone Q2 sơ bộ</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Năng lượng nhập khẩu (lực kéo âm)4.2/10<span class="secondary-score"></span></div>
+      <div class="secondary-text">Eurozone phụ thuộc nhập khẩu năng lượng — hưởng lợi khi dầu giảm 38% (về ~74$/barrel), giảm áp lực lạm phát nhanh hơn Mỹ. ECB vừa hike dựa trên dữ liệu cũ — rủi ro 'hike nhầm thời điểm'. Germany PMI tháng 6 vẫn cho thấy sector tư nhân co lại. Đây là lực kéo điểm EUR xuống.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-01-15:</span> <span class="history-score red">3.8</span> — ECB trong chu kỳ cắt giảm kéo dài từ 2024</div>
+      <div class="history-item"><span class="history-date">2026-06-11:</span> <span class="history-score yellow">7.0</span> — ECB tăng 25bp lên 2.25% — lần đầu từ 2023</div>
+      <div class="history-item"><span class="history-date">2026-06-23:</span> <span class="history-score yellow">5.8</span> — MOU Mỹ-Iran, dầu giảm — ECB có thể hike nhầm thời điểm, EUR yếu xuống 1.14</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('jpy')">
+    <span class="cur-flag">🇯🇵</span>
+    <div class="cur-info">
+      <div><span class="cur-code">JPY</span><span class="cur-stance" style="background:#78350f;color:#fef08a">N-Hawk (BoJ 1.0% · Tamura hike tiếp · real yield vẫn âm)</span></div>
+      <div class="cur-bank">Bank of Japan · Kazuo Ueda</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score yellow">6.6</div>
+      <div class="cur-sub-scores">M:7.2 S:5</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:66%;background:#facc15"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">1.00% · Tăng +25bp 7-1 (16/6/2026) — cao nhất từ 1995</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>Core CPI trên 2% liên tục 44 tháng — FY2026 dự báo 2.5-3.0%</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Lao động: </span>Lương Shunto tăng bền vững — điều kiện bình thường hóa đã đáp ứng</div>
+  </div>
+  <div class="cur-body" id="jpy">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">BoJ tăng lên 1.00% (7-1), cao nhất từ 1995. Lạm phát lõi neo trên mục tiêu. Summary of Opinions (24/6): đồng thuận rộng tiếp tục hike — 'nếu kinh tế và giá cả diễn biến đúng, hike tiếp là phù hợp.' Tamura (25/6): 'Nên tăng mỗi vài tháng hướng neutral rate ~2%.' Real yields Nhật vẫn rất âm — JPY yếu tương đối dù hawkish. Bộ Tài chính đã chi 11.7 nghìn tỷ yên can thiệp FX tháng 5, USDJPY vẫn ~160.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text">Ueda: 'Gradual, data-dependent.' Tamura (25/6): hike mỗi vài tháng — sẵn sàng accelerate nếu rủi ro lạm phát tăng. Himino (Deputy Gov, 24/6): 'Rủi ro lạm phát có thể vượt mục tiêu.' BoJ Summary of Opinions (24/6): broad support tiếp tục hike, 1 thành viên cảnh báo rủi ro cản đầu tư. Terminal rate thị trường định giá 1.25-1.50%. Tokyo CPI tháng 6 (26/6) là chỉ báo sớm cần theo dõi.</div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">26/6/2026 — CPI Tokyo tháng 6 vừa công bố — chỉ báo đầu cho CPI quốc gia tháng 6. 25/6/2026 — Tamura: 'Nên hike mỗi vài tháng, accelerate nếu cần.' 24/6/2026 — BoJ Summary of Opinions: đồng thuận rộng hike tiếp, Himino: upside risk lạm phát. 16/6 — BoJ tăng 25bp lên 1.00% (7-1). Bộ Tài chính chi 11.7 nghìn tỷ yên can thiệp FX — USDJPY vẫn neo ~160.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">26/6/2026</span>CPI Tokyo tháng 6 — vừa công bố hôm nay (chỉ báo sớm BoJ July)</div>
+      <div><span class="upcoming-date">25/7/2026</span>CPI toàn quốc Nhật tháng 6</div>
+      <div><span class="upcoming-date">30-31/7/2026</span>Họp BoJ — Tamura ủng hộ hike tiếp, target 1.25-1.50%?</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Safe Haven (đang suy yếu sau peace deal)5.5/10<span class="secondary-score"></span></div>
+      <div class="secondary-text">JPY là đồng tiền trú ẩn kinh điển — mạnh khi risk-off/địa chính trị. MOU Mỹ-Iran (19/6) giảm rủi ro địa chính trị → JPY mất một phần lực đỡ trú ẩn. USDJPY vẫn quanh 160 — gần ngưỡng can thiệp FX. Real yields Nhật vẫn rất âm là yếu tố kéo JPY yếu dai dẳng.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-03-05:</span> <span class="history-score yellow">6.8</span> — Chiến tranh Iran — JPY tăng nhờ dòng vốn trú ẩn</div>
+      <div class="history-item"><span class="history-date">2026-06-16:</span> <span class="history-score yellow">7.0</span> — BoJ tăng 25bp lên 1.00%, Tamura ủng hộ hike tiếp tục</div>
+      <div class="history-item"><span class="history-date">2026-06-19:</span> <span class="history-score yellow">6.2</span> — MOU Mỹ-Iran — JPY mất lực đỡ trú ẩn, USDJPY vẫn ~160</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('gbp')">
+    <span class="cur-flag">🇬🇧</span>
+    <div class="cur-info">
+      <div><span class="cur-code">GBP</span><span class="cur-stance" style="background:#78350f;color:#fef08a">N-Hawk (MPC 7-2 · services 3.7% sticky · BoE 30/7 live)</span></div>
+      <div class="cur-bank">Bank of England · Andrew Bailey</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score yellow">5.8</div>
+      <div class="cur-sub-scores">M:6.1 S:5</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:58%;background:#facc15"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">3.75% · Giữ nguyên 7-2 (18/6/2026) — 2 phiếu muốn tăng lên 4%</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>2.8% tháng 5 (giảm từ đỉnh 3.3% tháng 3) — BoE dự báo Q3 'dưới 3%'</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Services: </span>3.7% tháng 5 — thứ MPC theo dõi sát nhất — vẫn cứng đầu</div>
+  </div>
+  <div class="cur-body" id="gbp">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">BoE giữ nguyên nhưng 2 thành viên vote hike lên 4% — Megan Greene và Huw Pill (hawkish hơn tháng 4: 8-1). Sau peace deal, BoE hạ dự báo CPI xuống 'dưới 3% Q3, hơn 3.25% Q4', nhưng services inflation 3.7% tháng 5 vẫn là mối lo lớn nhất. Meeting 30/7 là 'genuinely live' — phụ thuộc CPI tháng 6 (15/7) và labor (16/7). Thất nghiệp đã lên 4.9% — lao động đang lơi.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text">Bailey: theo dõi sát hiệu ứng vòng hai trên lương/services. BoE: OIS curve upward slope ~30bp vào cuối 2026. Cần 2 dữ liệu tốt trước meeting 30/7 để thiểu số hike bị loại bỏ. Rủi ro đảo hai chiều: nếu CPI hạ nhanh → bớt hawkish; nếu services 3.7% neo → hike lên 4%. GB10Y (~4.48%) vẫn cao hơn US10Y (~4.37%) — outlier độc đáo.</div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">18/6/2026 — MPC 7-2 giữ nguyên 3.75%, Greene và Pill vote hike lên 4%. CPI tháng 5 = 2.8% (in-line). BoE hạ dự báo Q3 'dưới 3%' sau peace deal nhưng Q4 'trên 3.25%'. Services 3.7% là rủi ro chính còn lại. Dầu về $69-70 easing lạm phát nhưng không giải quyết services sticky.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">15/7/2026</span>CPI tháng 6 — nếu services 3.7% tiếp tục tăng, áp lực hike tăng</div>
+      <div><span class="upcoming-date">16/7/2026</span>Báo cáo lao động Anh tháng 5</div>
+      <div><span class="upcoming-date">30/7/2026</span>Họp MPC + MPR — 'Genuinely live meeting'</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Năng lượng + Services cứng đầu4.5/10<span class="secondary-score"></span></div>
+      <div class="secondary-text">Anh phụ thuộc nhập khẩu năng lượng — dầu giảm 38% sẽ hạ CPI headline nhưng không giải quyết được services inflation (3.7%) là gốc rễ lo ngại. BoE phải cân bằng 2 lực ngược chiều. Meeting 30/7 là quyết định then chốt.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-01-15:</span> <span class="history-score blue">5.0</span> — BoE giữ nguyên — lạm phát quanh mục tiêu, trung lập</div>
+      <div class="history-item"><span class="history-date">2026-06-18:</span> <span class="history-score yellow">5.5</span> — MPC 7-2 (2 phiếu hike) nhưng peace deal làm dự báo CPI hạ — 2 lực triệt tiêu</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('chf')">
+    <span class="cur-flag">🇨🇭</span>
+    <div class="cur-info">
+      <div><span class="cur-code">CHF</span><span class="cur-stance" style="background:#7c2d12;color:#fed7aa">N-Dove (0% · safe haven fade · SNB bỏ tham chiếu TĐ)</span></div>
+      <div class="cur-bank">Swiss National Bank · Martin Schlegel</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score red">3.8</div>
+      <div class="cur-sub-scores">M:4.2 S:3</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:38%;background:#f87171"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">0.00% · Giữ nguyên (18/6/2026) — bỏ tham chiếu rủi ro Trung Đông</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>0.6% tháng 5 — thấp nhất G7+AUD — SNB dự báo 0.6% cả năm</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Safe Haven: </span>CHF +12% vs USD trong 2025 nhờ dòng vốn trú ẩn — nay đang suy yếu</div>
+  </div>
+  <div class="cur-body" id="chf">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">SNB giữ 0% và bỏ tham chiếu rủi ro Trung Đông trong guidance (18/6) — tín hiệu rõ SNB nhận định geopolitical premium của CHF đang giảm. Sau peace deal và dầu giảm, SNB tăng 'readiness to intervene' nếu CHF mạnh bất thường. CHF đang ở ~0.81/USD — yếu nhất từ tháng 11/2025 theo USD mạnh và oil easing. Chênh lệch lãi suất Mỹ-Thụy Sĩ rất rộng (~3.625% vs 0%).</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text"></div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">26/6/2026 — SNB rate: USD/CHF = 0.8084 (SNB data). CHF gần mức yếu nhất 2 tháng. 18/6/2026 — SNB giữ nguyên 0%, BỎ tham chiếu rủi ro Trung Đông — báo hiệu geopolitical premium đang giảm. SNB tăng readiness intervene nếu CHF tăng bất thường. USDCHF tăng sau peace deal và FOMC hawkish.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">3/7/2026</span>CPI Thụy Sĩ tháng 6 — kiểm chứng dự báo 0.6%</div>
+      <div><span class="upcoming-date">18/9/2026</span>Họp SNB tiếp theo</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Safe Haven đang mất lực3.2/10<span class="secondary-score"></span></div>
+      <div class="secondary-text">CHF tăng +12% vs USD trong 2025 chủ yếu nhờ dòng vốn trú ẩn địa chính trị — không phải lãi suất (đang 0%). Với peace deal Mỹ-Iran, lực đỡ trú ẩn đang mất dần — đúng như SNB tự thừa nhận. Chênh lệch lãi suất Mỹ-Thụy Sĩ (~3.625%) tạo áp lực kép khiến CHF yếu đi — yếu tố kéo điểm xuống mạnh nhất nhóm.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-03-02:</span> <span class="history-score yellow">7.2</span> — Chiến tranh Iran — CHF tăng vọt nhờ dòng vốn trú ẩn</div>
+      <div class="history-item"><span class="history-date">2026-06-18:</span> <span class="history-score blue">5.0</span> — SNB bỏ tham chiếu Trung Đông — báo hiệu safe haven premium suy yếu</div>
+      <div class="history-item"><span class="history-date">2026-06-23:</span> <span class="history-score blue">4.5</span> — MOU Mỹ-Iran làm CHF mất lực đỡ chính, USD mạnh do Warsh/FOMC hawkish</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('cad')">
+    <span class="cur-flag">🇨🇦</span>
+    <div class="cur-info">
+      <div><span class="cur-code">CAD</span><span class="cur-stance" style="background:#7c2d12;color:#fed7aa">N-Dove (GDP âm · dầu $70 · LF+AM short · BoC MPR 15/7)</span></div>
+      <div class="cur-bank">Bank of Canada · Tiff Macklem</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score red">3.5</div>
+      <div class="cur-sub-scores">M:3.8 S:3</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:35%;background:#f87171"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">2.25% · Giữ nguyên lần 5 liên tiếp (10/6/2026)</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>2.8% tháng 4 — BoC kỳ vọng 'gần 3%' — Core 'just above 2%'</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Kinh tế: </span>GDP Q1 âm -0.1% annualized — thất nghiệp 6.5-7.0% — technical recession</div>
+  </div>
+  <div class="cur-body" id="cad">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">BoC bị kẹt: kinh tế yếu (GDP Q1 âm -0.1% annualized, Q4/2025 âm -1.0%, thất nghiệp 6.5-7%) nhưng không thể cắt lãi suất vì lạm phát. Dầu WTI nay về $69-70/barrel — giảm mạnh nhất từ pre-war. Canada là net exporter dầu, nên dầu giảm = giảm national income thực. Macklem: 'Không clearly in recession nhưng kinh tế weak.' Core CPI đã xuống 2.1% tháng 4 — core thấp cho phép BoC có dư địa cắt giảm nếu cần. BMO: giữ nguyên cả năm.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text"></div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">10/6/2026 — BoC giữ nguyên 2.25% lần 5. Macklem: kinh tế 'weak'. GDP Q1 xác nhận âm -0.1%. Core CPI xuống 2.1% — 'core just above 2%'. Dầu WTI tuần này giảm về $69-70 (mức thấp nhất từ pre-war) — mở thêm dư địa BoC cắt giảm. 15/7: BoC MPR — lần đầu có press conference kèm MPR trong chu kỳ này.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">15/7/2026</span>Họp BoC + MPR — lần đầu có press conference từ June</div>
+      <div><span class="upcoming-date">15/7/2026</span>BoC MPR — cập nhật dự báo tăng trưởng và lạm phát</div>
+      <div><span class="upcoming-date">9/9/2026</span>Họp BoC tiếp theo — có thể đổi hướng chính sách</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Giá dầu (Petro-currency)3.5/10<span class="secondary-score"></span></div>
+      <div class="secondary-text">CAD là petro-currency — phụ thuộc mạnh vào WTI/Brent. Dầu WTI $69.23/barrel, Brent $72.00 — giảm ~10% trong tuần, giảm ~38% từ đỉnh chiến tranh — mức thấp nhất pre-war. Canada là net exporter dầu, nên dầu giảm = giảm national income thực. GDP âm 2 quý liên tiếp (Q4/2025 và Q1/2026). Core CPI đã xuống 2.1% — thấp hơn nhiều so với headline, mở dư địa cắt giảm. Tariff Mỹ-Canada và CUSMA review vẫn là rủi ro nền. Đây là yếu tố kéo điểm CAD xuống mạnh nhất nhóm.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2026-03-15:</span> <span class="history-score blue">5.2</span> — Chiến tranh Iran đẩy dầu lên — CAD hưởng lợi tạm thời</div>
+      <div class="history-item"><span class="history-date">2026-06-10:</span> <span class="history-score red">4.0</span> — BoC giữ nguyên lần 5, GDP Q1 âm, 'technical recession'</div>
+      <div class="history-item"><span class="history-date">2026-06-24:</span> <span class="history-score red">3.8</span> — Dầu về $71 (mức pre-war) — nguồn lạm phát giảm, kẹt chính sách</div>
+      <div class="history-item"><span class="history-date">2026-06-26:</span> <span class="history-score red">3.8</span> — Dầu WTI giảm thêm về $69 — -10% tuần lớn nhất; core CPI 2.1% mở dư địa cắt giảm</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="cur-card">
+  <button class="cur-head" onclick="toggleCur('nzd')">
+    <span class="cur-flag">🇳🇿</span>
+    <div class="cur-info">
+      <div><span class="cur-code">NZD</span><span class="cur-stance" style="background:#1e3a5f;color:#bfdbfe">Neutral (RBNZ split 3-3 · GDP Q1 miss · RBNZ 8/7 live)</span></div>
+      <div class="cur-bank">Reserve Bank of New Zealand · Anna Breman</div>
+    </div>
+    <div class="cur-scores">
+      <div class="cur-main-score blue">5</div>
+      <div class="cur-sub-scores">M:5.2 S:4.5</div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:50%;background:#93c5fd"></div></div>
+    </div>
+    <span style="color:#71717a;font-size:12px;margin-left:6px">▼</span>
+  </button>
+  <div class="cur-summary">
+    <div class="cur-rate"><span style="color:#71717a">Lãi suất: </span><b style="color:#e4e4e7">2.25% · Giữ nguyên lần 3 liên tiếp (29/5/2026) — MPC split 3-3, Breman casting vote</b></div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">CPI: </span>3.1% YoY Q1/2026 (giữ nguyên từ Q4/2025) — vượt trần mục tiêu 1-3% · RBNZ dự báo đỉnh 4.3% Q3/2026</div>
+    <div style="font-size:12px;color:#a1a1aa;margin-top:5px"><span style="color:#71717a">Tăng trưởng: </span>GDP Q1/2026: +0.8% q/q (miss vs dự báo) · NZIER downgrade 2026 xuống 0.6% · Consumer confidence 80.4 (thấp nhất từ 2023)</div>
+  </div>
+  <div class="cur-body" id="nzd">
+    <div class="cur-section"><div class="cur-section-title">📋 Narrative</div>
+    <div class="cur-text">RBNZ đang ở điểm inflection nguy hiểm: lạm phát 3.1% vượt trần mục tiêu, dự báo đỉnh 4.3% Q3 — nhưng GDP Q1 miss (0.8% vs dự báo 1.1%) và NZIER hạ tăng trưởng xuống 0.6% cho thấy rủi ro stagflation. MPC tháng 5 split 3-3 (3 thành viên ngoài muốn hike, 3 thành viên RBNZ muốn hold) — Breman dùng casting vote giữ nguyên. OCR track RBNZ tháng 5 MPS dự báo đỉnh ~3.28% cuối 2026. Dầu giảm mạnh về $69-70 làm giảm áp lực lạm phát ngắn hạn — ANZ (26/6) revise endpoint xuống ~3.0%.</div></div>
+    <div class="cur-section"><div class="cur-section-title">🗣 Forward Guidance</div>
+    <div class="cur-text">Breman (thống đốc): 'Inflation remains too high — OCR likely to rise this year sooner and by more.' OCR track tháng 5 MPS: hike bắt đầu Q3/2026, đỉnh ~3.28%. UBS (Stephen Wu): 'Hike July là cần thiết — gap tháng 7 đến tháng 9 quá dài, rủi ro de-anchoring kỳ vọng lạm phát.' ANZ (26/6): Hike July vẫn likely dù dầu giảm — 'a sensible strategy would be to get a hike in the bag.' Thị trường OIS: ~60% hold, 40% hike July 8 — highly uncertain.</div></div>
+    <div class="event-box"><div class="event-label">⚡ Sự kiện thay đổi gần nhất</div>
+    <div class="event-text">26/6/2026 — ANZ Weekly Data Wrap: 'Dầu giảm pose downside risk to inflation — but hike July vẫn likely.' RBNZ endpoint revision xuống ~3.0%. 24/6/2026 — NZIER downgrade GDP 2026 xuống 0.6%, consumer confidence 80.4 — thấp nhất từ 2023. Q1 GDP: 0.8% q/q (miss). 29/5/2026 — RBNZ hold 2.25%, MPC split 3-3 — Breman casting vote. OCR track đỉnh ~3.28%, dự báo lạm phát đỉnh 4.3% Q3.</div></div>
+    <div class="cur-section"><div class="cur-section-title">📅 Upcoming Events</div>
+    <div style="font-size:12px;color:#a1a1aa">
+      <div><span class="upcoming-date">8/7/2026</span>Họp RBNZ — 'live meeting': UBS/ANZ expect hike 25bp lên 2.50%; thị trường ~40% hike</div>
+      <div><span class="upcoming-date">16/7/2026</span>CPI Q2/2026 NZ — dự báo tăng mạnh về 4.0-4.3% (đỉnh chu kỳ)</div>
+      <div><span class="upcoming-date">2/9/2026</span>Họp RBNZ — MPS đầy đủ với dự báo mới</div>
+    </div></div>
+    <div class="secondary-box">
+      <div class="secondary-title">🔍 🔍 Stagflation Risk + Dairy/Commodity4.5/10<span class="secondary-score"></span></div>
+      <div class="secondary-text">NZD là commodity currency phụ thuộc vào dairy/agricultural exports (GDT price index record high tháng 6 — thuận lợi). Nhưng GDP miss + consumer confidence đáy 2023 + NZD yếu tạo ra bộ ba stagflation risk. Dầu giảm $69-70 làm giảm nhẹ peak CPI (từ 4.5% xuống 4.0-4.3%) — tích cực nhẹ nhưng không đủ để thay đổi hướng RBNZ. NZD mất ~3% vs USD từ cuối tháng 5. Z-score COT đang về −1.2.</div>
+    </div>
+    <div class="cur-section"><div class="cur-section-title">📈 Score History</div>
+    <div class="history-list">
+      <div class="history-item"><span class="history-date">2025-11-01:</span> <span class="history-score red">3.5</span> — RBNZ trong chu kỳ cắt giảm sâu — OCR 2.25% sau nhiều lần cắt</div>
+      <div class="history-item"><span class="history-date">2026-02-18:</span> <span class="history-score blue">4.8</span> — RBNZ hold, OCR track shift hawkish — tín hiệu hike cuối năm</div>
+      <div class="history-item"><span class="history-date">2026-05-29:</span> <span class="history-score yellow">5.8</span> — MPC split 3-3, Breman hold. OCR track 3.28% — dự báo lạm phát đỉnh 4.3%</div>
+      <div class="history-item"><span class="history-date">2026-06-24:</span> <span class="history-score blue">5.2</span> — GDP Q1 miss + NZIER downgrade + consumer confidence đáy — NZD yếu; dầu giảm hạ peak CPI</div>
+    </div></div>
+    <div class="meta-grid">
+      <div class="meta-box"><div class="meta-label">CPI Release</div><div class="meta-val">CPI Q2: 16/7/2026</div><div class="meta-note">Dự báo đỉnh 4.0-4.3% — quyết định hướng RBNZ tháng 9</div></div>
+      <div class="meta-box"><div class="meta-label">RBNZ Meeting</div><div class="meta-val">8/7/2026 — Highly uncertain</div><div class="meta-note">UBS/ANZ: hike 25bp. Market OIS: ~40% hike. Split vote khả năng cao.</div></div>
+    </div>
+  </div>
+</div>
+<div class="section" id="sec-method">
+  <button class="section-btn" onclick="toggle('method','sec-method')">
+    <div class="section-btn-inner">ℹ️ Phương pháp & Hướng dẫn cập nhật</div>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="method-text" id="method" style="display:none">
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-bottom:6px">① NGUỒN DỮ LIỆU</p>
+    <p><b style="color:#d4d4d8">FMP API</b> — 27 cặp FX · DXY · Gold · Brent · S&P500 · US10Y. Realtime.</p>
+    <p><b style="color:#d4d4d8">TradingView</b> (web search) — DE/GB/JP/AU/CA/NZ/CH 10Y bond yield · WTI crude. Trễ tối đa 1 ngày — chấp nhận được cho dashboard chiến lược.</p>
+    <p><b style="color:#d4d4d8">Tradingster.com</b> (web fetch) — COT Legacy Futures, cutoff thứ Ba, release thứ Sáu 15:30 ET. URLs cố định: EUR 099741 · JPY 097741 · AUD 232741 · GBP 096742 · CAD 090741 · CHF 092741 · NZD 112741 · USD 098662. Claude tự fetch và tính Z-score.</p>
+    <p><b style="color:#d4d4d8">Web search</b> — Policy rates · Narrative NHTW · Macro flash (CPI/NFP/GDP) · OIS probability. Chỉ search khi có meeting/data release.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">② SCORE TỔNG HỢP 0–10</p>
+    <p><code>Score = Macro_Core × 0.70 + Secondary_Factor × 0.30</code></p>
+    <p><code>Macro_Core = Tầng1 × 0.35 + Tầng2 × 0.40 + Tầng3 × 0.25</code></p>
+
+    <p style="margin-top:8px"><b style="color:#d4d4d8">Tầng 1 — Data thực tế (35%):</b> Lạm phát vs target + Lao động/tăng trưởng vs natural rate. Trọng số nội bộ thay đổi theo <b>pha kinh tế</b> (xem bên dưới).</p>
+    <p><b style="color:#d4d4d8">Tầng 2 — Delta vs kỳ vọng (40% — trọng số cao nhất):</b> Actual vs consensus surprise · NHTW meeting hawkish/dovish hơn hay kém thị trường kỳ vọng · <b>Decay 4 tuần</b>: tuần T = 100%, T-1 = 50%, T-2 = 25%, T-3 = 25%, T-4+ = 0%. Lý do: thị trường di chuyển theo kỳ vọng, không phải data tuyệt đối.</p>
+    <p><b style="color:#d4d4d8">Tầng 3 — Forward expectation (25%):</b> OIS/futures pricing bao nhiêu hike/cut · Guidance momentum (đang shift hawkish hay dovish so với meeting trước) · Độ rõ ràng của path (explicit path vs data-dependent).</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">③ 4 PHA KINH TẾ — TRỌNG SỐ TẦNG 1</p>
+    <p><b style="color:#4ade80">Pha 1 — Expansion · Tightening</b> (lạm phát &gt; target, lao động mạnh → NHTW ưu tiên chống lạm phát): <code>Inflation 55% · Labor 20% · Policy rate 25%</code> — Hiện tại: AUD, USD</p>
+    <p><b style="color:#facc15">Pha 2 — Stagflation · Dual Pressure</b> (lạm phát cao + tăng trưởng/lao động yếu → NHTW bị kẹt): <code>Inflation 40% · Labor 40% · Policy rate 20%</code> — Hiện tại: GBP, NZD, CAD</p>
+    <p><b style="color:#93c5fd">Pha 3 — Slowdown · Pivot Watch</b> (lạm phát về gần target, lo tăng trưởng → NHTW shift dovish): <code>Labor 50% · Inflation 25% · Policy rate 25%</code> — Hiện tại: CHF, EUR</p>
+    <p><b style="color:#f87171">Pha 4 — Recovery · Easing</b> (lạm phát dưới target, cần kích thích → NHTW cắt giảm): <code>Labor 60% · Inflation 15% · Policy rate 25%</code> — Hiện tại: không có</p>
+    <p style="color:#52525b;font-size:11px">Claude tự xác định pha dựa trên NHTW statement + macro data. Review lại sau mỗi meeting lớn.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">④ SECONDARY FACTOR (30%) — ĐẶC THÙ TỪNG ĐỒNG TIỀN</p>
+    <p><b style="color:#d4d4d8">USD</b> — Tariff inflation (độc lập với dầu) + NFP surprise index · <b>EUR</b> — Nhập khẩu năng lượng (dầu giảm → lạm phát hạ nhanh) + Germany PMI · <b>GBP</b> — Services CPI sticky + fiscal space · <b>JPY</b> — Real yield âm/dương + BoJ intervention risk + safe haven flow · <b>AUD</b> — China PMI + commodity basket (iron ore/coal) · <b>NZD</b> — GDT dairy index + stagflation risk · <b>CAD</b> — WTI oil price correlation · <b>CHF</b> — Geopolitical safe haven premium (tăng khi risk-off, giảm khi peace deal)</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑤ COT Z-SCORE</p>
+    <p><code>Z = (net_position_hiện_tại − mean_52w) / stdev_52w</code></p>
+    <p>Nguồn: Tradingster.com · CFTC Legacy Futures Only · Non-Commercial (Large Speculators). |Z| &gt; 2.0 = cực đoan (crowded) · 1.0–2.0 = lệch rõ · &lt; 1.0 = bình thường. <b>Không dùng để timing</b> — chỉ xác nhận chiều hoặc cảnh báo đảo chiều khi Z cực đoan.</p>
+    <p style="color:#52525b;font-size:11px">Z-score được tính từ 52 tuần lịch sử net position. Claude fetch Tradingster mỗi thứ Sáu và tự tính. Khi |Z| &gt; 2.0 + data macro đảo chiều = warning level cao nhất.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑥ BOND YIELD SPREAD</p>
+    <p><code>Spread (bp) = yield_base_ccy − yield_quote_ccy</code></p>
+    <p><span style="background:#14532d;color:#86efac;padding:1px 6px;border-radius:3px;font-size:11px">↗ Giãn rộng</span> = có lợi cho base ccy (spread đang tăng) · <span style="background:#7f1d1d;color:#fca5a5;padding:1px 6px;border-radius:3px;font-size:11px">↘ Thu hẹp</span> = bất lợi cho base ccy · <span style="background:#27272a;color:#a1a1aa;padding:1px 6px;border-radius:3px;font-size:11px">→ Ổn định</span> = không rõ hướng. <b>Động lực giãn/thu hẹp quan trọng hơn mức tuyệt đối.</b></p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑦ LAYER BIAS & CONFLUENCE</p>
+    <p>↑ Bullish base · ↓ Bearish base · — Neutral &nbsp;|&nbsp; [Macro · Kỹ thuật · COT]. <b>3/3 = Confluence mạnh</b> → conviction cao. Phân kỳ = thận trọng, chờ catalyst.</p>
+    <p><b style="color:#d4d4d8">Điểm số ≠ tín hiệu mua/bán.</b> Score → direction bias. Kỹ thuật → timing entry. COT → confirm hoặc cảnh báo crowded.</p>
+
+    <p style="font-size:13px;font-weight:700;color:#e4e4e7;margin-top:14px;margin-bottom:6px">⑧ QUY TRÌNH CẬP NHẬT — 1 LỆNH</p>
+    <p>Gõ: <code style="background:#18181b;color:#4ade80;padding:2px 8px;border-radius:4px;font-size:12px">"cập nhật dashboard"</code> — Claude sẽ tự động: FMP API (giá FX + DXY + Gold + Brent + S&P500 + US10Y) → TradingView search (7 bond yields + WTI) → Tradingster fetch (COT 8 currencies + tính Z-score) → Web search (narrative/policy nếu có event) → Tính score → Update toàn bộ dashboard.</p>
+    <p style="color:#52525b">Thời gian update ước tính: 3–5 phút. Data sources: FMP · TradingView · Tradingster · Web search. Không phải lời khuyên đầu tư.</p>
+
+  </div>
+</div>
+
+
+<div class="footer">Không phải lời khuyên đầu tư · Dữ liệu tổng hợp từ nguồn công khai · FMP · TradingView · Tradingster · 29/06/2026</div>
+</div><!-- /wrap -->
+<script>
+function toggle(id, secId){
+  var el=document.getElementById(id);
+  var btn=document.getElementById(secId).querySelector('.section-btn');
+  if(el.style.display==='none'||el.style.display===''){
+    el.style.display='block';
+    btn.classList.add('open');
+  } else {
+    el.style.display='none';
+    btn.classList.remove('open');
+  }
+}
+function togglePair(id){
+  var el=document.getElementById(id);
+  if(el.classList.contains('show')){el.classList.remove('show');}
+  else{el.classList.add('show');}
+}
+function toggleCur(id){
+  var el=document.getElementById(id);
+  if(el.classList.contains('show')){el.classList.remove('show');}
+  else{el.classList.add('show');}
+}
+function switchTab(tab){
+  document.getElementById('usd-pairs').style.display = tab==='usd' ? 'block' : 'none';
+  document.getElementById('cross-pairs').style.display = tab==='cross' ? 'block' : 'none';
+  document.getElementById('tab-usd').className = 'tab-btn ' + (tab==='usd'?'tab-active':'tab-inactive');
+  document.getElementById('tab-cross').className = 'tab-btn ' + (tab==='cross'?'tab-active':'tab-inactive');
+}
+// Init: open heatmap section
+document.getElementById('heatmap').style.display='block';
+document.getElementById('spot').style.display='block';
+</script>
+</body>
+</html>
